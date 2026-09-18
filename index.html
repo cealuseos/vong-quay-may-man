@@ -28,22 +28,22 @@
     .wheel-stage { min-height:625px; padding:27px 25px; position:relative; overflow:hidden; display:grid; place-items:center; }
     .pointer { position:absolute; top:30px; z-index:3; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:43px solid var(--red); filter:drop-shadow(0 5px 3px #0008); }
     .wheel-wrap { position:relative; width:min(100%,500px); aspect-ratio:1; border-radius:50%; padding:14px; background:linear-gradient(135deg,#ffe596,#a96a16); box-shadow:0 0 0 7px #fff0b6,0 0 0 12px #9b641a,0 23px 45px #0008; }
-    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.8s cubic-bezier(.12,.8,.15,1); background:#164775; }
+    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.7s cubic-bezier(.13,.78,.12,1); background:#164775; }
     .hub { pointer-events:none; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:84px; height:84px; border:7px solid #fff0b6; border-radius:50%; display:grid; place-items:center; background:var(--gold); color:#44270d; font-size:28px; box-shadow:0 4px 14px #0007; }
     .stage-note { margin:20px 0 0; color:#c9dbef; text-align:center; font-size:.92rem; }
-    .promo-card { width:min(100%,450px); margin-top:18px; overflow:hidden; border:2px solid #f8c85b; border-radius:14px; background:#06182f; box-shadow:0 8px 24px #0006; text-align:center; transition:transform .2s ease; }
-    .promo-card:hover { transform:translateY(-2px); }
+    .promo-card { width:min(100%,580px); margin-top:18px; overflow:hidden; border:2px solid #f8c85b; border-radius:16px; background:#06182f; box-shadow:0 10px 30px #0008; text-align:center; transition:transform .2s ease; cursor:pointer; }
+    .promo-card:hover { transform:translateY(-2px); border-color:#ffe8a8; }
     .promo-card[hidden] { display:none !important; }
     .promo-card a { display:block; text-decoration:none; color:inherit; }
-    .promo-card img { display:block; width:100%; max-height:160px; object-fit:cover; }
-    .promo-badge { padding:7px 12px; background:#f8c85b22; color:#f8c85b; font-size:.78rem; font-weight:700; border-top:1px solid #f8c85b44; display:flex; align-items:center; justify-content:center; gap:6px; }
-    .promo-config { width:min(100%,450px); margin-top:18px; padding:12px; border:1px dashed #f8c85b88; border-radius:13px; background:#ffffff0a; }
-    .promo-config h3 { margin:0 0 9px; color:#ffe19b; font-size:.82rem; }
-    .promo-fields { display:grid; grid-template-columns:1fr 1.4fr auto; gap:7px; align-items:end; }
-    .promo-fields label { font-size:.7rem; }
-    .promo-fields input:not([type=file]) { width:100%; margin-top:4px; padding:8px; border:1px solid #ffffff33; border-radius:8px; background:#06182f; color:#fff; }
-    .promo-fields input[type=file] { display:block; max-width:100%; margin-top:4px; color:#c7ddf1; font-size:.65rem; }
-    .promo-fields button { padding:9px; }
+    .promo-card img { display:block; width:100%; min-height:160px; max-height:300px; object-fit:contain; background:#030d1a; }
+    .promo-badge { padding:9px 14px; background:#f8c85b22; color:#f8c85b; font-size:.82rem; font-weight:700; border-top:1px solid #f8c85b44; display:flex; align-items:center; justify-content:center; gap:6px; }
+    .promo-config { width:min(100%,580px); margin-top:18px; padding:14px; border:1px dashed #f8c85b88; border-radius:14px; background:#ffffff0a; }
+    .promo-config h3 { margin:0 0 9px; color:#ffe19b; font-size:.85rem; }
+    .promo-fields { display:grid; grid-template-columns:1.2fr 1.4fr auto; gap:8px; align-items:end; }
+    .promo-fields label { font-size:.72rem; }
+    .promo-fields input:not([type=file]) { width:100%; margin-top:4px; padding:9px; border:1px solid #ffffff33; border-radius:8px; background:#06182f; color:#fff; }
+    .promo-fields input[type=file] { display:block; max-width:100%; margin-top:4px; color:#c7ddf1; font-size:.7rem; }
+    .promo-fields button { padding:9px 12px; }
     .side { display:grid; gap:16px; }
     .countdown { padding:21px; text-align:center; }
     .eyebrow { margin:0; color:#9dc9ef; text-transform:uppercase; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
@@ -55,16 +55,16 @@
     .settings { padding:20px; } .settings h2,.entries h2 { margin:0 0 15px; font-size:1.05rem; }.range { display:flex; gap:9px; align-items:end; }.range label { flex:1; }.range input { display:block; width:100%; margin-top:5px; border:1px solid #ffffff33; border-radius:10px; padding:10px; color:#fff; background:#06182f; }.range button { padding:10px 12px; }
     .join { padding:20px; background:linear-gradient(140deg,#ffffff16,#ffffff08); }.join h2 { margin:0 0 4px; font-size:1.15rem; }.join p { margin:0 0 14px; color:#b8cee3; font-size:.84rem; }.join-form { display:grid; grid-template-columns:1.2fr .65fr 1.25fr auto; gap:8px; }.join-form input { min-width:0; border:1px solid #ffffff36; border-radius:10px; padding:11px; color:white; background:#06182f; }.admin-contact{margin-top:3px;color:#bfe3ff;font-size:.72rem;text-decoration:none;display:block}.admin-contact:hover{text-decoration:underline}
     .entries { padding:20px; }.entries-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }.entries h2 { margin:0; }.badge { padding:5px 9px; border-radius:99px; color:#0c3258; background:#bfe3ff; font-size:.75rem; font-weight:800; }.entry-list { max-height:163px; overflow:auto; display:grid; gap:7px; padding-right:3px; }.empty { color:#aac3da; text-align:center; padding:19px 4px; font-size:.86rem; }.entry { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:10px; background:#ffffff0c; font-size:.84rem; }.number { color:var(--gold); font-weight:800; }
-    .prize { padding:18px; text-align:center; }
+    .prize { padding:20px; text-align:center; }
     .prize-header small { display:block; color:#a9c5df; font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
-    .prize-header strong { display:block; color:var(--gold); margin:3px 0 2px; font-size:1.18rem; font-weight:800; }
-    .prize-sub { display:block; color:#c7ddf1; font-size:.82rem; }
-    .prize-img-wrap { position:relative; width:100%; min-height:180px; max-height:360px; margin:11px 0 0; border-radius:15px; overflow:hidden; border:2px solid #f8c85b; background:#041427; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px #0006; cursor:pointer; }
+    .prize-header strong { display:block; color:var(--gold); margin:3px 0 2px; font-size:1.22rem; font-weight:800; }
+    .prize-sub { display:block; color:#c7ddf1; font-size:.84rem; }
+    .prize-img-wrap { position:relative; width:100%; min-height:260px; max-height:500px; margin:12px 0 0; border-radius:16px; overflow:hidden; border:2px solid #f8c85b; background:#041427; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 30px #0008; cursor:pointer; }
     .prize-img-wrap:hover { border-color:#ffe8a8; }
-    .prize img { width:100%; height:auto; max-height:350px; object-fit:contain; display:block; }
-    .prize-zoom-btn { position:absolute; bottom:8px; right:8px; background:#000000b0; color:#ffe596; font-size:.72rem; font-weight:700; padding:4px 8px; border-radius:6px; pointer-events:none; backdrop-filter:blur(4px); border:1px solid #ffffff2b; }
-    .prize-controls { display:flex; justify-content:center; gap:7px; align-items:center; margin-top:11px; flex-wrap:wrap; }
-    .upload-label { align-items:center; gap:6px; margin-top:9px; padding:7px 9px; cursor:pointer; border:1px dashed #f8c85b99; border-radius:8px; color:#ffe29a; font-size:.74rem; font-weight:800; display:inline-flex; }
+    .prize img { width:100%; height:auto; max-height:480px; object-fit:contain; display:block; }
+    .prize-zoom-btn { position:absolute; bottom:9px; right:9px; background:#000000b0; color:#ffe596; font-size:.75rem; font-weight:700; padding:5px 9px; border-radius:7px; pointer-events:none; backdrop-filter:blur(4px); border:1px solid #ffffff2b; }
+    .prize-controls { display:flex; justify-content:center; gap:8px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+    .upload-label { align-items:center; gap:6px; padding:8px 12px; cursor:pointer; border:1px dashed #f8c85b99; border-radius:8px; color:#ffe29a; font-size:.78rem; font-weight:800; display:inline-flex; }
     .upload-label:hover { background:#f8c85b15; }
     .upload-label input { display:none; }
     .modal{position:fixed;inset:0;z-index:10;display:none;place-items:center;padding:18px;background:#031126b8;backdrop-filter:blur(8px)}
@@ -220,6 +220,11 @@
     const entries = [];
     const ADMIN_USER = 'vtclonefootball';
     const ADMIN_HASH = 'b6ee0a839a49003d499bbcd2cabc29017dbcd762f802e33d92037145073ffb56';
+    let serverToken = '';
+    try { serverToken = sessionStorage.getItem('luckyAdminToken') || ''; } catch {}
+    let isUploadingPromo = false;
+    let isUploadingPrize = false;
+    let promoSource = '';
     let min = 1, max = 200, remaining = 300, timer, rotation = 0, locked = false, isSpinning = false;
     let targetEndsAt = null, sharedWinner = '', hasEverLoaded = false;
     const el = id => document.getElementById(id);
@@ -414,7 +419,7 @@
       }
 
       isSpinning = true;
-      canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+      canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
       canvas.style.transform = `rotate(${rotation}deg)`;
       el('stageNote').textContent = '🎡 Vòng quay đang quay chọn người may mắn…';
       playTickSoundEffect();
@@ -425,7 +430,7 @@
         el('result').classList.add('show');
         el('stageNote').textContent = `Kết quả: Chúc mừng ${escapeHtml(winner.name)} (Số ${winner.number})!`;
         playWinSoundEffect();
-      }, 5900);
+      }, 5800);
     }
 
     function spin() {
@@ -483,7 +488,7 @@
     const DEFAULT_PRIZE_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="%230b2c52"/><rect x="20" y="42" width="60" height="42" rx="6" fill="%23f8c85b"/><rect x="16" y="32" width="68" height="13" rx="4" fill="%23e5a93b"/><rect x="45" y="32" width="10" height="52" fill="%23c93b32"/><path d="M50 32c-6-15-22-12-16 0 5 8 16 0 16 0z" fill="%23c93b32"/><path d="M50 32c6-15 22-12 16 0-5 8-16 0-16 0z" fill="%23c93b32"/><circle cx="50" cy="32" r="4" fill="%23f8c85b"/></svg>';
     el('prizeImage').src = DEFAULT_PRIZE_IMAGE;
 
-    function compressImage(file, maxWidth, maxHeight, quality = 0.82) {
+    function compressImage(file, maxWidth, maxHeight, quality = 0.86) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = e => {
@@ -518,12 +523,14 @@
         event.target.value = '';
         return;
       }
+      isUploadingPrize = true;
       try {
-        el('prizeStatus').textContent = 'Đang xử lý ảnh...';
-        const compressed = await compressImage(file, 900, 900, 0.86);
+        el('prizeStatus').textContent = 'Đang xử lý và tải ảnh...';
+        const compressed = await compressImage(file, 960, 960, 0.88);
         el('prizeImage').src = compressed;
         localStorage.setItem('luckyPrizeImage', compressed);
         if (serverToken) {
+          el('prizeStatus').textContent = 'Đang đồng bộ ảnh giải thưởng lên máy chủ...';
           const s = await request('/api/admin/media', {
             method: 'POST',
             body: JSON.stringify({ prizeImage: compressed })
@@ -535,7 +542,9 @@
         }
       } catch (err) {
         alert('Lỗi: ' + (err.message || err));
-        el('prizeStatus').textContent = '';
+        el('prizeStatus').textContent = 'Lỗi: ' + (err.message || err);
+      } finally {
+        isUploadingPrize = false;
       }
     });
 
@@ -557,10 +566,15 @@
       }
     });
 
-    let promoSource = '';
     function safeUrl(value) {
+      if (!value) return '';
+      let str = String(value).trim();
+      if (str === 'https://' || str === 'http://' || str === 'https:' || str === 'http:') return '';
+      if (!/^https?:\/\//i.test(str)) {
+        str = 'https://' + str;
+      }
       try {
-        const url = new URL(value);
+        const url = new URL(str);
         return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
       } catch {
         return '';
@@ -569,8 +583,8 @@
 
     function renderPromo() {
       const raw = el('promoUrl').value.trim();
-      const url = raw ? safeUrl(raw) : '';
-      el('promoLink').href = url || '#';
+      const url = safeUrl(raw);
+      el('promoLink').href = url || 'javascript:void(0)';
       el('promoCard').hidden = !promoSource;
       el('promoImage').src = promoSource;
       if (!url) {
@@ -590,14 +604,30 @@
         event.target.value = '';
         return;
       }
+      isUploadingPromo = true;
       try {
         el('promoStatus').textContent = 'Đang đọc và nén ảnh banner...';
-        promoSource = await compressImage(file, 800, 320, 0.82);
+        promoSource = await compressImage(file, 960, 480, 0.86);
         renderPromo();
-        el('promoStatus').textContent = 'Đã chọn ảnh. Nhập liên kết (nếu có) và nhấn Lưu để đồng bộ.';
+        localStorage.setItem('luckyPromoImage', promoSource);
+        
+        if (serverToken) {
+          el('promoStatus').textContent = 'Đang đồng bộ ảnh banner lên máy chủ...';
+          const link = safeUrl(el('promoUrl').value.trim());
+          const s = await request('/api/admin/media', {
+            method: 'POST',
+            body: JSON.stringify({ promoImage: promoSource, promoUrl: link })
+          });
+          applyShared(s);
+          el('promoStatus').textContent = '✓ Đã thay đổi và đồng bộ banner thành công!';
+        } else {
+          el('promoStatus').textContent = 'Đã hiển thị trên máy này. Đăng nhập Quản trị để đồng bộ cho người chơi.';
+        }
       } catch (err) {
-        alert('Lỗi: ' + err.message);
-        el('promoStatus').textContent = '';
+        alert('Lỗi tải ảnh banner: ' + (err.message || err));
+        el('promoStatus').textContent = 'Lỗi: ' + (err.message || err);
+      } finally {
+        isUploadingPromo = false;
       }
     });
 
@@ -607,9 +637,9 @@
         return;
       }
       const rawUrl = el('promoUrl').value.trim();
-      const url = rawUrl ? safeUrl(rawUrl) : '';
-      if (rawUrl && !url) {
-        alert('Vui lòng nhập đường link hợp lệ bắt đầu bằng http:// hoặc https://');
+      const url = safeUrl(rawUrl);
+      if (rawUrl && rawUrl !== 'https://' && rawUrl !== 'http://' && !url) {
+        alert('Vui lòng nhập đường link hợp lệ (ví dụ: https://zalo.me/... hoặc https://facebook.com/...)');
         return;
       }
       el('promoUrl').value = url;
@@ -624,10 +654,10 @@
             body: JSON.stringify({ promoImage: promoSource, promoUrl: url })
           });
           applyShared(s);
-          el('promoStatus').textContent = '✓ Đã đồng bộ banner và link đến tất cả điện thoại người chơi!';
+          el('promoStatus').textContent = '✓ Đã lưu banner và link thành công!';
         } catch (err) {
           alert('Lỗi khi lưu lên máy chủ: ' + err.message);
-          el('promoStatus').textContent = '';
+          el('promoStatus').textContent = 'Lỗi: ' + err.message;
         }
       } else {
         el('promoStatus').textContent = 'Đã lưu trên máy này. Bấm Quản trị đăng nhập để đồng bộ cho người chơi.';
@@ -665,7 +695,7 @@
       canvas.style.transition = 'none';
       canvas.style.transform = 'rotate(0deg)';
       void canvas.offsetWidth;
-      canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+      canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
       el('result').classList.remove('show');
       el('result').innerHTML = '';
       el('joinForm').reset();
@@ -733,6 +763,17 @@
       el('imageModal').setAttribute('aria-hidden', 'false');
     });
 
+    el('promoCard').addEventListener('click', e => {
+      const raw = el('promoUrl').value.trim();
+      const url = safeUrl(raw);
+      if (!url && promoSource) {
+        e.preventDefault();
+        el('modalPreviewImg').src = promoSource;
+        el('imageModal').classList.add('show');
+        el('imageModal').setAttribute('aria-hidden', 'false');
+      }
+    });
+
     el('closeImageModal').addEventListener('click', () => {
       el('imageModal').classList.remove('show');
       el('imageModal').setAttribute('aria-hidden', 'true');
@@ -760,7 +801,6 @@
     setCountdown();
 
     // Khi trang được mở qua máy chủ, phần bên dưới đồng bộ dữ liệu chung cho mọi thiết bị.
-    let serverToken = sessionStorage.getItem('luckyAdminToken') || '';
     async function request(path, options = {}) {
       const response = await fetch(path, {
         ...options,
@@ -785,21 +825,32 @@
       el('chosenNumber').max = max;
 
       // Đồng bộ ảnh giải thưởng cho điện thoại & mọi thiết bị
-      if (s.prizeImage) {
-        el('prizeImage').src = s.prizeImage;
-      } else {
-        const localPrize = localStorage.getItem('luckyPrizeImage');
-        el('prizeImage').src = localPrize || DEFAULT_PRIZE_IMAGE;
+      if (!isUploadingPrize) {
+        if (s.prizeImage) {
+          el('prizeImage').src = s.prizeImage;
+        } else {
+          const localPrize = localStorage.getItem('luckyPrizeImage');
+          el('prizeImage').src = localPrize || DEFAULT_PRIZE_IMAGE;
+        }
       }
 
       // Đồng bộ banner quảng cáo & link dưới vòng quay cho mọi người chơi
-      if (s.promoImage) {
-        promoSource = s.promoImage;
-        el('promoUrl').value = s.promoUrl || '';
-        renderPromo();
-      } else {
-        promoSource = '';
-        el('promoCard').hidden = true;
+      if (!isUploadingPromo) {
+        if (s.promoImage) {
+          promoSource = s.promoImage;
+          el('promoUrl').value = s.promoUrl || '';
+          renderPromo();
+        } else {
+          const localPromo = localStorage.getItem('luckyPromoImage');
+          if (localPromo) {
+            promoSource = localPromo;
+            el('promoUrl').value = localStorage.getItem('luckyPromoUrl') || '';
+            renderPromo();
+          } else {
+            promoSource = '';
+            el('promoCard').hidden = true;
+          }
+        }
       }
 
       targetEndsAt = s.endsAt;
@@ -835,7 +886,7 @@
           canvas.style.transition = 'none';
           canvas.style.transform = 'rotate(0deg)';
           void canvas.offsetWidth;
-          canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+          canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
           el('result').classList.remove('show');
           el('result').innerHTML = '';
           el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
@@ -956,7 +1007,7 @@
             canvas.style.transition = 'none';
             canvas.style.transform = 'rotate(0deg)';
             void canvas.offsetWidth;
-            canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+            canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
             el('result').classList.remove('show');
             el('result').innerHTML = '';
             el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
