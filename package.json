@@ -1,0 +1,21 @@
+{
+  "name": "vong-quay-may-man",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vòng quay may mắn trực tuyến thời gian thực, sẵn sàng deploy lên GitHub và Render",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "node -e \"console.log('Build successful')\""
+  },
+  "keywords": [
+    "vong-quay-may-man",
+    "lucky-draw",
+    "render",
+    "github"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
