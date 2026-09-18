@@ -55,7 +55,27 @@
     .settings { padding:20px; } .settings h2,.entries h2 { margin:0 0 15px; font-size:1.05rem; }.range { display:flex; gap:9px; align-items:end; }.range label { flex:1; }.range input { display:block; width:100%; margin-top:5px; border:1px solid #ffffff33; border-radius:10px; padding:10px; color:#fff; background:#06182f; }.range button { padding:10px 12px; }
     .join { padding:20px; background:linear-gradient(140deg,#ffffff16,#ffffff08); }.join h2 { margin:0 0 4px; font-size:1.15rem; }.join p { margin:0 0 14px; color:#b8cee3; font-size:.84rem; }.join-form { display:grid; grid-template-columns:1.2fr .65fr 1.25fr auto; gap:8px; }.join-form input { min-width:0; border:1px solid #ffffff36; border-radius:10px; padding:11px; color:white; background:#06182f; }.admin-contact{margin-top:3px;color:#bfe3ff;font-size:.72rem;text-decoration:none;display:block}.admin-contact:hover{text-decoration:underline}
     .entries { padding:20px; }.entries-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }.entries h2 { margin:0; }.badge { padding:5px 9px; border-radius:99px; color:#0c3258; background:#bfe3ff; font-size:.75rem; font-weight:800; }.entry-list { max-height:163px; overflow:auto; display:grid; gap:7px; padding-right:3px; }.empty { color:#aac3da; text-align:center; padding:19px 4px; font-size:.86rem; }.entry { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:10px; background:#ffffff0c; font-size:.84rem; }.number { color:var(--gold); font-weight:800; }
-    .prize { padding:15px; display:flex; align-items:center; gap:15px; }.prize img { width:83px; height:83px; object-fit:cover; border-radius:15px; border:2px solid #f8c85b; background:#06182f; }.prize strong { display:block; color:var(--gold); margin:4px 0; font-size:1.05rem; }.prize small { color:#bed2e6; }.prize-copy { min-width:0; flex:1; }.upload-label { align-items:center; gap:6px; margin-top:9px; padding:7px 9px; cursor:pointer; border:1px dashed #f8c85b99; border-radius:8px; color:#ffe29a; font-size:.74rem; font-weight:800; display:inline-flex; }.upload-label:hover { background:#f8c85b15; }.upload-label input { display:none; }.modal{position:fixed;inset:0;z-index:10;display:none;place-items:center;padding:18px;background:#031126b8;backdrop-filter:blur(8px)}.modal.show{display:grid}.modal-card{width:min(100%,370px);padding:26px;border:1px solid #f8c85b77;border-radius:20px;background:#0b2d55;box-shadow:0 25px 60px #000a}.modal-card h2{margin:0 0 5px;color:var(--gold)}.modal-card p{margin:0 0 17px;color:#c3d8ec;font-size:.86rem}.modal-card label{display:block;margin-bottom:12px}.modal-card input{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid #ffffff33;border-radius:10px;background:#06182f;color:#fff}.login-actions{display:flex;justify-content:flex-end;gap:8px}.login-error{min-height:18px;margin:5px 0 9px;color:#ffb3a8;font-size:.78rem}
+    .prize { padding:18px; text-align:center; }
+    .prize-header small { display:block; color:#a9c5df; font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
+    .prize-header strong { display:block; color:var(--gold); margin:3px 0 2px; font-size:1.18rem; font-weight:800; }
+    .prize-sub { display:block; color:#c7ddf1; font-size:.82rem; }
+    .prize-img-wrap { position:relative; width:100%; min-height:180px; max-height:360px; margin:11px 0 0; border-radius:15px; overflow:hidden; border:2px solid #f8c85b; background:#041427; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px #0006; cursor:pointer; }
+    .prize-img-wrap:hover { border-color:#ffe8a8; }
+    .prize img { width:100%; height:auto; max-height:350px; object-fit:contain; display:block; }
+    .prize-zoom-btn { position:absolute; bottom:8px; right:8px; background:#000000b0; color:#ffe596; font-size:.72rem; font-weight:700; padding:4px 8px; border-radius:6px; pointer-events:none; backdrop-filter:blur(4px); border:1px solid #ffffff2b; }
+    .prize-controls { display:flex; justify-content:center; gap:7px; align-items:center; margin-top:11px; flex-wrap:wrap; }
+    .upload-label { align-items:center; gap:6px; margin-top:9px; padding:7px 9px; cursor:pointer; border:1px dashed #f8c85b99; border-radius:8px; color:#ffe29a; font-size:.74rem; font-weight:800; display:inline-flex; }
+    .upload-label:hover { background:#f8c85b15; }
+    .upload-label input { display:none; }
+    .modal{position:fixed;inset:0;z-index:10;display:none;place-items:center;padding:18px;background:#031126b8;backdrop-filter:blur(8px)}
+    .modal.show{display:grid}
+    .modal-card{width:min(100%,370px);padding:26px;border:1px solid #f8c85b77;border-radius:20px;background:#0b2d55;box-shadow:0 25px 60px #000a}
+    .modal-card h2{margin:0 0 5px;color:var(--gold)}
+    .modal-card p{margin:0 0 17px;color:#c3d8ec;font-size:.86rem}
+    .modal-card label{display:block;margin-bottom:12px}
+    .modal-card input{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid #ffffff33;border-radius:10px;background:#06182f;color:#fff}
+    .login-actions{display:flex;justify-content:flex-end;gap:8px}
+    .login-error{min-height:18px;margin:5px 0 9px;color:#ffb3a8;font-size:.78rem}
     .result { display:none; padding:17px; text-align:center; border:1px solid #ffdd83aa; background:linear-gradient(135deg,#bc761e,#7c350e); }.result.show { display:block; animation:pop .45s ease-out; }.result h2 { margin:0 0 4px; color:#fff2c6; }.result p { margin:0; font-size:.9rem; }.result b { color:var(--gold); font-size:1.12rem; } @keyframes pop { from {transform:scale(.9);opacity:0} to {transform:scale(1);opacity:1} }
     @media(max-width:850px) { .layout{grid-template-columns:1fr}.wheel-stage{min-height:auto;padding:55px 25px 28px}.wheel-wrap{max-width:470px}.pointer{top:30px} }
     @media(max-width:560px) { .join-form{grid-template-columns:1fr 82px}.join-form input[type=url]{grid-column:1/-1}.join-form button{grid-column:1/-1} } @media(max-width:480px) { .page{padding:22px 14px 32px} header .live{display:none}.wheel-stage{padding-inline:14px}.wheel-wrap{padding:10px}.hub{width:66px;height:66px;font-size:23px;border-width:5px}.title{margin-bottom:21px} }
@@ -141,20 +161,23 @@
         </section>
 
         <section class="panel prize">
-          <img id="prizeImage" alt="Hình giải thưởng" />
-          <div class="prize-copy">
+          <div class="prize-header">
             <small>GIẢI THƯỞNG HÔM NAY</small>
             <strong>Quà tặng may mắn</strong>
-            <small>Người có số được quay trúng sẽ nhận giải</small>
-            <div class="admin-only" style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap">
-              <label class="upload-label" style="margin-top:0">
-                ↥ Tải ảnh giải thưởng
-                <input id="prizeUpload" type="file" accept="image/*" />
-              </label>
-              <button id="deletePrize" class="danger" type="button" style="padding:6px 10px;font-size:0.74rem">Xóa ảnh</button>
-            </div>
-            <div id="prizeStatus" class="admin-only" style="font-size:0.72rem;color:#ffe29a;margin-top:4px;min-height:14px;"></div>
+            <span class="prize-sub">Người có số được quay trúng sẽ nhận giải</span>
           </div>
+          <div class="prize-img-wrap" id="prizeImgWrap" title="Bấm để xem ảnh phóng to">
+            <img id="prizeImage" alt="Hình giải thưởng" />
+            <span class="prize-zoom-btn">🔍 Phóng to</span>
+          </div>
+          <div class="admin-only prize-controls">
+            <label class="upload-label" style="margin-top:0">
+              ↥ Tải ảnh giải thưởng
+              <input id="prizeUpload" type="file" accept="image/*" />
+            </label>
+            <button id="deletePrize" class="danger" type="button" style="padding:6px 11px;font-size:0.75rem">Xóa ảnh</button>
+          </div>
+          <div id="prizeStatus" class="admin-only" style="font-size:0.74rem;color:#ffe29a;margin-top:5px;min-height:14px;"></div>
         </section>
 
         <section class="panel entries">
@@ -184,6 +207,13 @@
         <button class="primary" type="submit">Đăng nhập</button>
       </div>
     </form>
+  </div>
+
+  <div class="modal" id="imageModal" aria-hidden="true">
+    <div style="max-width:92vw;max-height:92vh;display:flex;flex-direction:column;align-items:center;position:relative;">
+      <button type="button" id="closeImageModal" class="secondary" style="position:absolute;top:-42px;right:0;padding:6px 12px;font-size:0.8rem">✕ Đóng</button>
+      <img id="modalPreviewImg" style="max-width:100%;max-height:84vh;border-radius:14px;border:2px solid #f8c85b;box-shadow:0 25px 60px #000c;object-fit:contain;background:#06182f" alt="Ảnh giải thưởng phóng to" />
+    </div>
   </div>
 
   <script>
@@ -490,7 +520,7 @@
       }
       try {
         el('prizeStatus').textContent = 'Đang xử lý ảnh...';
-        const compressed = await compressImage(file, 400, 400, 0.85);
+        const compressed = await compressImage(file, 900, 900, 0.86);
         el('prizeImage').src = compressed;
         localStorage.setItem('luckyPrizeImage', compressed);
         if (serverToken) {
@@ -693,6 +723,26 @@
       el('adminModal').classList.remove('show');
       el('adminModal').setAttribute('aria-hidden', 'true');
       setAdmin(true);
+    });
+
+    el('prizeImgWrap').addEventListener('click', () => {
+      const src = el('prizeImage').src;
+      if (!src || src.startsWith('data:image/svg+xml')) return;
+      el('modalPreviewImg').src = src;
+      el('imageModal').classList.add('show');
+      el('imageModal').setAttribute('aria-hidden', 'false');
+    });
+
+    el('closeImageModal').addEventListener('click', () => {
+      el('imageModal').classList.remove('show');
+      el('imageModal').setAttribute('aria-hidden', 'true');
+    });
+
+    el('imageModal').addEventListener('click', e => {
+      if (e.target === el('imageModal')) {
+        el('imageModal').classList.remove('show');
+        el('imageModal').setAttribute('aria-hidden', 'true');
+      }
     });
 
     try {
