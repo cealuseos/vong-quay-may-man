@@ -160,7 +160,7 @@ const server = http.createServer(async (req, res) => {
         return json(res, 400, { error: 'Số hoặc tên người chơi chưa hợp lệ.' });
       }
       if (s.winner) {
-        return json(res, 409, { error: 'Vòng quay này đã kết thúc.' });
+        return json(res, 409, { error: 'Vòng quay này đã kết thúc và chọn được người thắng. Cổng chọn số đã khóa!' });
       }
       if (s.entries.some(x => x.number === n)) {
         return json(res, 409, { error: `Số ${n} đã có người chọn trước đó.` });

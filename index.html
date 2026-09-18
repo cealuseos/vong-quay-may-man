@@ -73,6 +73,9 @@
     .device-registered-box { display:none; padding:12px 14px; border:1px solid #f8c85b88; border-radius:12px; background:#f8c85b18; color:#ffe8a8; font-size:.86rem; text-align:center; line-height:1.45; }
     .device-registered-box b { color:#fff; font-size:.95rem; }
     .device-registered-box span { display:block; color:#95dfba; font-size:1.05rem; font-weight:800; margin:4px 0; }
+    .round-ended-box { display:none; padding:14px 16px; border:1px solid rgba(0,240,255,0.4); border-radius:12px; background:linear-gradient(135deg, rgba(6,32,64,0.85), rgba(3,16,36,0.92)); color:#cde7ff; font-size:.86rem; text-align:center; line-height:1.45; box-shadow:0 0 15px rgba(0,240,255,0.15); }
+    .round-ended-box strong { display:block; color:#00f0ff; font-size:.96rem; margin-bottom:4px; text-shadow:0 0 8px rgba(0,240,255,0.4); }
+    .round-ended-box small { display:block; color:#9ec5e8; font-size:.78rem; margin-top:5px; }
     .entries { padding:20px; }.entries-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }.entries h2 { margin:0; }.badge { padding:5px 9px; border-radius:99px; color:#0c3258; background:#bfe3ff; font-size:.75rem; font-weight:800; }.entry-list { max-height:163px; overflow:auto; display:grid; gap:7px; padding-right:3px; }.empty { color:#aac3da; text-align:center; padding:19px 4px; font-size:.86rem; }.entry { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:10px; background:#ffffff0c; font-size:.84rem; }.number { color:var(--gold); font-weight:800; }
     .prize { padding:20px; text-align:center; }
     .prize-header small { display:block; color:#a9c5df; font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
@@ -195,6 +198,11 @@
         <section class="panel join">
           <h2>Đăng ký số may mắn</h2>
           <p id="joinSubtitle">Mỗi người / thiết bị chỉ được chọn một số duy nhất mỗi vòng.</p>
+          <div id="roundEndedNotice" class="round-ended-box">
+            <strong>🔒 VÒNG QUAY ĐÃ KẾT THÚC</strong>
+            <span>Hệ thống đã khóa cổng chọn số cho vòng này.</span>
+            <small>Vui lòng chờ Quản trị viên khởi tạo vòng quay mới!</small>
+          </div>
           <div id="deviceRegisteredNotice" class="device-registered-box">
             <div>✓ Bạn đã đăng ký thành công cho vòng quay này!</div>
             <span id="registeredNumberDisplay">Số của bạn: --</span>
@@ -316,12 +324,27 @@
       const activeRound = s?.roundId || currentRoundId;
       const myChoice = getDeviceChoiceForRound(activeRound);
       const isRegistered = Boolean(myChoice);
+      const isEnded = Boolean(s?.winner) || Boolean(locked);
 
+      const roundEndedNotice = el('roundEndedNotice');
       const notice = el('deviceRegisteredNotice');
       const form = el('joinForm');
       const subtitle = el('joinSubtitle');
 
-      if (isRegistered && !s?.winner) {
+      if (isEnded) {
+        if (roundEndedNotice) roundEndedNotice.style.display = 'block';
+        if (notice) notice.style.display = 'none';
+        if (form) {
+          form.style.display = 'none';
+          form.querySelectorAll('input,button').forEach(x => (x.disabled = true));
+        }
+        if (subtitle) subtitle.textContent = 'Vòng quay này đã có kết quả. Cổng chọn số đã khóa.';
+        return;
+      }
+
+      if (roundEndedNotice) roundEndedNotice.style.display = 'none';
+
+      if (isRegistered) {
         if (notice) notice.style.display = 'block';
         if (el('registeredNumberDisplay')) {
           el('registeredNumberDisplay').textContent = `Số của bạn: ${myChoice.number} (${myChoice.name})`;
@@ -332,10 +355,7 @@
         if (notice) notice.style.display = 'none';
         if (form) {
           form.style.display = 'grid';
-          // Chỉ disable khi vòng quay kết thúc
-          if (!locked) {
-            form.querySelectorAll('input,button').forEach(x => (x.disabled = false));
-          }
+          form.querySelectorAll('input,button').forEach(x => (x.disabled = false));
         }
         if (subtitle) subtitle.textContent = 'Mỗi người / thiết bị chỉ được chọn một số duy nhất mỗi vòng.';
       }
@@ -806,7 +826,10 @@
 
     el('joinForm').addEventListener('submit', e => {
       e.preventDefault();
-      if (locked) return;
+      if (locked || sharedWinner) {
+        alert('Vòng quay này đã kết thúc! Vui lòng chờ vòng mới.');
+        return;
+      }
       const activeRound = currentRoundId || 1;
       const registered = getDeviceChoiceForRound(activeRound);
       if (registered) {
@@ -1441,6 +1464,11 @@
         el('joinForm').addEventListener('submit', async event => {
           event.preventDefault();
           event.stopImmediatePropagation();
+
+          if (locked || sharedWinner) {
+            alert('Vòng quay này đã kết thúc! Cổng chọn số đã bị khóa.');
+            return;
+          }
 
           const activeRound = currentRoundId || 1;
           const registered = getDeviceChoiceForRound(activeRound);
