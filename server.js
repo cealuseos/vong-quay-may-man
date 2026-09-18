@@ -14,16 +14,42 @@ const ROOT = __dirname;
 const DATA_FILE = path.join(ROOT, 'round-data.json');
 const ADMIN_USER = 'vtclonefootball';
 const ADMIN_HASH = 'b6ee0a839a49003d499bbcd2cabc29017dbcd762f802e33d92037145073ffb56';
+const ADMIN_SECRET = 'lucky_vtclonefootball_key_2026';
 const adminTokens = new Set();
+
+function createAdminToken() {
+  const payload = 'admin_' + Date.now();
+  const sig = crypto.createHmac('sha256', ADMIN_SECRET).update(payload).digest('hex');
+  const token = `${payload}.${sig}`;
+  adminTokens.add(token);
+  return token;
+}
+
+function verifyAdminToken(token) {
+  if (!token || typeof token !== 'string') return false;
+  if (adminTokens.has(token)) return true;
+  const parts = token.split('.');
+  if (parts.length !== 2) return false;
+  const [payload, sig] = parts;
+  const expected = crypto.createHmac('sha256', ADMIN_SECRET).update(payload).digest('hex');
+  if (sig === expected) {
+    adminTokens.add(token);
+    return true;
+  }
+  return false;
+}
 const defaultState = {
+  roundId: 1,
   entries: [],
   min: 1,
-  max: 200,
+  max: 500,
+  spinDuration: 6,
   endsAt: null,
   winner: null,
   prizeImage: null,
   promoImage: null,
-  promoUrl: ''
+  promoUrl: '',
+  zaloCommunityUrl: ''
 };
 
 function state() {
@@ -31,6 +57,8 @@ function state() {
   try {
     if (fs.existsSync(DATA_FILE)) {
       current = { ...defaultState, ...JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')) };
+      if (!current.roundId) current.roundId = 1;
+      if (!current.spinDuration) current.spinDuration = 6;
     } else {
       current = { ...defaultState };
     }
@@ -38,9 +66,13 @@ function state() {
     current = { ...defaultState };
   }
 
-  if (current.endsAt && !current.winner && Date.now() >= current.endsAt && current.entries && current.entries.length) {
-    current.winner = current.entries[Math.floor(Math.random() * current.entries.length)];
-    current.endsAt = Date.now();
+  if (current.endsAt && !current.winner && Date.now() >= current.endsAt) {
+    if (current.entries && current.entries.length) {
+      current.winner = current.entries[Math.floor(Math.random() * current.entries.length)];
+      current.endsAt = Date.now();
+    } else {
+      current.endsAt = null;
+    }
     save(current);
   }
   return current;
@@ -67,7 +99,7 @@ function body(req) {
     let raw = '';
     req.on('data', c => {
       raw += c;
-      if (raw.length > 5_000_000) req.destroy();
+      if (raw.length > 15_000_000) req.destroy();
     });
     req.on('end', () => {
       try {
@@ -81,7 +113,7 @@ function body(req) {
 }
 
 function isAdmin(req) {
-  return adminTokens.has(req.headers['x-admin-token']);
+  return verifyAdminToken(req.headers['x-admin-token']);
 }
 
 function type(file) {
@@ -113,17 +145,19 @@ const server = http.createServer(async (req, res) => {
 
     // API Tham gia chọn số
     if (url.pathname === '/api/join' && req.method === 'POST') {
-      const { name, number, social } = await body(req);
+      const { name, number, social, deviceId } = await body(req);
       const s = state();
       const n = Number(number);
       const clean = String(name || '').trim().slice(0, 32);
       const contact = String(social || '').trim().slice(0, 200);
+      const cleanDeviceId = String(deviceId || '').trim().slice(0, 64);
+
+      // Trích xuất địa chỉ IP của client (hỗ trợ reverse proxy headers)
+      const forwarded = req.headers['x-forwarded-for'];
+      const clientIp = (forwarded ? String(forwarded).split(',')[0].trim() : '') || req.socket.remoteAddress || '';
 
       if (!clean || !Number.isInteger(n) || n < s.min || n > s.max) {
         return json(res, 400, { error: 'Số hoặc tên người chơi chưa hợp lệ.' });
-      }
-      if (contact && !/^https?:\/\//i.test(contact)) {
-        return json(res, 400, { error: 'Link liên hệ cần bắt đầu bằng http:// hoặc https://' });
       }
       if (s.winner) {
         return json(res, 409, { error: 'Vòng quay này đã kết thúc.' });
@@ -135,7 +169,26 @@ const server = http.createServer(async (req, res) => {
         return json(res, 409, { error: 'Mỗi người chơi chỉ được chọn một số.' });
       }
 
-      s.entries.push({ name: clean, number: n, social: contact });
+      // Khóa theo thiết bị (Device ID)
+      if (cleanDeviceId && s.entries.some(x => x.deviceId && x.deviceId === cleanDeviceId)) {
+        return json(res, 409, { error: 'Thiết bị của bạn đã chọn một số trong vòng này rồi. Mỗi thiết bị chỉ được chọn 1 số.' });
+      }
+
+      // Khóa theo địa chỉ mạng (IP) nếu có IP hợp lệ (bỏ qua localhost / internal)
+      if (clientIp && clientIp !== '127.0.0.1' && clientIp !== '::1') {
+        const ipCount = s.entries.filter(x => x.ip && x.ip === clientIp).length;
+        if (ipCount >= 1) {
+          return json(res, 409, { error: 'Mạng / Thiết bị này đã gửi lượt chọn số rồi. Vui lòng đợi vòng quay tiếp theo!' });
+        }
+      }
+
+      s.entries.push({
+        name: clean,
+        number: n,
+        social: contact,
+        deviceId: cleanDeviceId,
+        ip: clientIp
+      });
       s.entries.sort((a, b) => a.number - b.number);
       save(s);
       return json(res, 201, s);
@@ -148,8 +201,7 @@ const server = http.createServer(async (req, res) => {
       if (username !== ADMIN_USER || hash !== ADMIN_HASH) {
         return json(res, 401, { error: 'Tài khoản hoặc mật khẩu quản trị chưa đúng.' });
       }
-      const token = crypto.randomBytes(32).toString('hex');
-      adminTokens.add(token);
+      const token = createAdminToken();
       return json(res, 200, { token });
     }
 
@@ -172,7 +224,26 @@ const server = http.createServer(async (req, res) => {
 
       s.min = min;
       s.max = max;
+      if (d.spinDuration !== undefined) {
+        const dur = Number(d.spinDuration);
+        if (Number.isInteger(dur) && dur >= 2 && dur <= 60) {
+          s.spinDuration = dur;
+        }
+      }
       s.endsAt = Date.now() + seconds * 1000;
+      save(s);
+      return json(res, 200, s);
+    }
+
+    // API Cấu hình thời gian quay số (spinDuration)
+    if (url.pathname === '/api/admin/spin-duration' && req.method === 'POST') {
+      const d = await body(req);
+      const s = state();
+      const dur = Number(d.spinDuration);
+      if (!Number.isInteger(dur) || dur < 2 || dur > 60) {
+        return json(res, 400, { error: 'Thời gian quay phải là số nguyên từ 2 đến 60 giây.' });
+      }
+      s.spinDuration = dur;
       save(s);
       return json(res, 200, s);
     }
@@ -192,6 +263,7 @@ const server = http.createServer(async (req, res) => {
     // API Tạo vòng quay mới (Reset)
     if (url.pathname === '/api/admin/reset' && req.method === 'POST') {
       const s = state();
+      s.roundId = (s.roundId || 1) + 1;
       s.entries = [];
       s.winner = null;
       s.endsAt = null;
@@ -199,13 +271,14 @@ const server = http.createServer(async (req, res) => {
       return json(res, 200, s);
     }
 
-    // API Cập nhật hình ảnh giải thưởng và banner kèm liên kết
+    // API Cập nhật hình ảnh giải thưởng và banner kèm liên kết, link cộng đồng Zalo
     if (url.pathname === '/api/admin/media' && req.method === 'POST') {
       const d = await body(req);
       const s = state();
       if (d.prizeImage !== undefined) s.prizeImage = d.prizeImage;
       if (d.promoImage !== undefined) s.promoImage = d.promoImage;
       if (d.promoUrl !== undefined) s.promoUrl = String(d.promoUrl || '').trim();
+      if (d.zaloCommunityUrl !== undefined) s.zaloCommunityUrl = String(d.zaloCommunityUrl || '').trim();
       save(s);
       return json(res, 200, s);
     }

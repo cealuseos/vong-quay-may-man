@@ -20,16 +20,28 @@
     header { display:flex; justify-content:space-between; align-items:center; gap:18px; margin-bottom:26px; }
     .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:.04em; }
     .brand-mark { display:grid; place-items:center; width:42px; height:42px; border-radius:50%; color:#182542; background:var(--gold); font-size:22px; box-shadow:0 0 25px #f8c85b77; }
-    .live { color:#d9e9ff; font-size:.85rem; display:flex; align-items:center; gap:8px; } .dot { width:9px; height:9px; border-radius:50%; background:#5ee5a8; box-shadow:0 0 12px #5ee5a8; }.admin-action{padding:8px 11px;color:#ffe6a8;background:#ffffff10;border:1px solid #ffffff2b;font-size:.78rem;border-radius:8px;cursor:pointer}.admin-only{display:none!important}body.is-admin .admin-only{display:flex!important}.admin-only.block{display:none!important}body.is-admin .admin-only.block{display:block!important}
+    .live { color:#d9e9ff; font-size:.85rem; display:flex; align-items:center; gap:8px; flex-wrap:wrap; } .dot { width:9px; height:9px; border-radius:50%; background:#5ee5a8; box-shadow:0 0 12px #5ee5a8; }.admin-action{padding:8px 11px;color:#ffe6a8;background:#ffffff10;border:1px solid #ffffff2b;font-size:.78rem;border-radius:8px;cursor:pointer}.admin-only{display:none!important}body.is-admin .admin-only{display:flex!important}.admin-only.block{display:none!important}body.is-admin .admin-only.block{display:block!important}
+    .zalo-community-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 13px; border-radius:99px; background:linear-gradient(135deg,#0068ff,#0088ff); color:#fff; font-size:.78rem; font-weight:700; text-decoration:none; border:1px solid #78baff88; box-shadow:0 2px 10px #0068ff44; transition:transform .16s,filter .16s; }
+    .zalo-community-btn:hover { filter:brightness(1.15); transform:translateY(-1px); color:#fff; }
+    .zalo-community-btn svg { width:15px; height:15px; fill:currentColor; }
+    .zalo-config { width:min(100%,580px); margin-top:14px; padding:14px; border:1px dashed #0088ff99; border-radius:14px; background:#0055c814; }
+    .zalo-config h3 { margin:0 0 9px; color:#8acaff; font-size:.85rem; }
     .title { text-align:center; margin:2px 0 29px; } .title p { color:#c2d7ed; margin:0 0 5px; font-weight:600; }
     h1 { font-family:"Playfair Display",serif; font-size:clamp(2.25rem,6vw,4.8rem); line-height:1; margin:0; letter-spacing:-.045em; color:var(--gold); text-shadow:0 3px 0 #af6f18,0 9px 28px #0008; }
     .layout { display:grid; grid-template-columns:minmax(360px,1.1fr) minmax(320px,.9fr); gap:24px; align-items:start; }
     .panel { background:linear-gradient(145deg,#ffffff12,#ffffff08); border:1px solid #ffffff25; border-radius:25px; box-shadow:0 18px 46px #0004; backdrop-filter:blur(12px); }
-    .wheel-stage { min-height:625px; padding:27px 25px; position:relative; overflow:hidden; display:grid; place-items:center; }
-    .pointer { position:absolute; top:30px; z-index:3; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:43px solid var(--red); filter:drop-shadow(0 5px 3px #0008); }
-    .wheel-wrap { position:relative; width:min(100%,500px); aspect-ratio:1; border-radius:50%; padding:14px; background:linear-gradient(135deg,#ffe596,#a96a16); box-shadow:0 0 0 7px #fff0b6,0 0 0 12px #9b641a,0 23px 45px #0008; }
-    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.7s cubic-bezier(.13,.78,.12,1); background:#164775; }
-    .hub { pointer-events:none; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:84px; height:84px; border:7px solid #fff0b6; border-radius:50%; display:grid; place-items:center; background:var(--gold); color:#44270d; font-size:28px; box-shadow:0 4px 14px #0007; }
+    .wheel-stage { min-height:625px; padding:27px 25px; position:relative; overflow:hidden; display:grid; place-items:center; background:radial-gradient(circle at 50% 45%, #061e3c 0%, #020f20 65%, #010610 100%); border-color:#00f0ff33; box-shadow:0 18px 50px #000a, inset 0 0 60px #00f0ff0d; }
+    .wheel-stage::before { content:""; position:absolute; inset:0; pointer-events:none; background-image:radial-gradient(rgba(0,240,255,0.06) 1px, transparent 1px); background-size:24px 24px; opacity:0.6; }
+    .pointer { position:absolute; top:20px; z-index:4; width:34px; height:50px; display:flex; flex-direction:column; align-items:center; filter:drop-shadow(0 0 12px #00f0ff); pointer-events:none; }
+    .pointer::before { content:""; width:16px; height:16px; border-radius:50%; background:#00f0ff; box-shadow:0 0 16px #00f0ff, 0 0 30px #ffffff; animation:pointerPulse 1.4s infinite alternate; }
+    .pointer::after { content:""; width:0; height:0; border-left:15px solid transparent; border-right:15px solid transparent; border-top:30px solid #00f0ff; margin-top:-4px; filter:drop-shadow(0 3px 6px #000); }
+    @keyframes pointerPulse { 0% { transform:scale(0.9); filter:brightness(1); } 100% { transform:scale(1.2); filter:brightness(1.4); } }
+    .wheel-wrap { position:relative; width:min(100%,500px); aspect-ratio:1; border-radius:50%; padding:11px; background:linear-gradient(135deg,#0a213e,#041122 55%,#020b18); border:2px solid #00f0ffaa; box-shadow:0 0 0 4px #041933, 0 0 0 8px #00c3ff44, 0 0 35px rgba(0,240,255,0.38), inset 0 0 25px rgba(0,240,255,0.2), 0 25px 60px #000c; }
+    .wheel-wrap::after { content:""; position:absolute; inset:-16px; border-radius:50%; border:1px dashed rgba(0,240,255,0.28); pointer-events:none; animation:orbitSpin 45s linear infinite; }
+    @keyframes orbitSpin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.7s cubic-bezier(.13,.78,.12,1); background:#020914; }
+    .hub { pointer-events:none; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:84px; height:84px; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle at 35% 35%, #00f0ff 0%, #005bb5 50%, #021226 90%); border:3px solid #00f0ff; color:#ffffff; font-size:36px; box-shadow:0 0 25px #00f0ff, inset 0 0 16px #ffffff99, 0 0 0 6px #03152ebb, 0 0 0 9px #00f0ff55; text-shadow:0 0 12px #00f0ff, 0 0 24px #fff; animation:coreGlow 2.5s infinite ease-in-out; }
+    @keyframes coreGlow { 0%, 100% { box-shadow:0 0 20px #00f0ff, inset 0 0 15px #ffffff88, 0 0 0 6px #03152ebb, 0 0 0 8px #00f0ff44; } 50% { box-shadow:0 0 35px #00ffff, inset 0 0 24px #ffffff, 0 0 0 6px #03152ebb, 0 0 0 12px #00f0ffaa; } }
     .stage-note { margin:20px 0 0; color:#c9dbef; text-align:center; font-size:.92rem; }
     .promo-card { width:min(100%,580px); margin-top:18px; overflow:hidden; border:2px solid #f8c85b; border-radius:16px; background:#06182f; box-shadow:0 10px 30px #0008; text-align:center; transition:transform .2s ease; cursor:pointer; }
     .promo-card:hover { transform:translateY(-2px); border-color:#ffe8a8; }
@@ -45,15 +57,22 @@
     .promo-fields input[type=file] { display:block; max-width:100%; margin-top:4px; color:#c7ddf1; font-size:.7rem; }
     .promo-fields button { padding:9px 12px; }
     .side { display:grid; gap:16px; }
-    .countdown { padding:21px; text-align:center; }
-    .eyebrow { margin:0; color:#9dc9ef; text-transform:uppercase; font-size:.72rem; font-weight:800; letter-spacing:.13em; }
-    #time { margin:5px 0 13px; color:var(--gold); font-size:3.05rem; font-weight:800; line-height:1; font-variant-numeric:tabular-nums; }
+    .countdown { padding:21px 18px; text-align:center; position:relative; overflow:hidden; }
+    .eyebrow { margin:0; color:#9dc9ef; text-transform:uppercase; font-size:.74rem; font-weight:800; letter-spacing:.13em; }
+    .timer-wrap { display:flex; flex-direction:column; align-items:center; margin:6px 0 13px; }
+    #time { margin:0; color:var(--gold); font-size:3.15rem; font-weight:800; line-height:1; font-family:"JetBrains Mono", Consolas, "Courier New", monospace; font-variant-numeric:tabular-nums; display:inline-flex; align-items:baseline; justify-content:center; text-shadow:0 0 18px rgba(248,200,91,0.55), 0 0 35px rgba(248,200,91,0.25); }
+    .timer-ms { font-size:1.55rem; color:#ffd978; opacity:0.85; font-weight:700; margin-left:3px; min-width:32px; text-align:left; font-family:inherit; }
+    .timer-progress-track { width:100%; max-width:240px; height:6px; background:rgba(255,255,255,0.08); border-radius:99px; overflow:hidden; margin-top:10px; border:1px solid rgba(0,240,255,0.25); box-shadow:inset 0 1px 3px rgba(0,0,0,0.5); }
+    .timer-progress-bar { height:100%; width:100%; background:linear-gradient(90deg, #00f0ff, #f8c85b); border-radius:99px; box-shadow:0 0 12px rgba(0,240,255,0.7); transform-origin:left center; transition:width 0.06s linear; }
     .controls { display:flex; justify-content:center; align-items:end; gap:8px; } .round-actions{display:flex;justify-content:center;gap:8px;margin-top:12px}.danger{color:#fff5ee;background:#c84b3f} label { text-align:left; color:#bad2ea; font-size:.75rem; font-weight:700; } input { font:inherit; }
     .small-input { display:block; width:66px; margin-top:5px; padding:8px; border-radius:9px; text-align:center; border:1px solid #ffffff33; color:white; background:#06182f; }
     button { border:0; cursor:pointer; font:700 .88rem "Be Vietnam Pro",sans-serif; border-radius:10px; padding:11px 14px; transition:transform .16s,filter .16s; } button:hover { filter:brightness(1.08); transform:translateY(-1px); } button:disabled { cursor:not-allowed; opacity:.45; transform:none; }
     .secondary { color:#dcecff; background:#ffffff13; border:1px solid #ffffff22; } .primary { color:#40290d; background:var(--gold); }
     .settings { padding:20px; } .settings h2,.entries h2 { margin:0 0 15px; font-size:1.05rem; }.range { display:flex; gap:9px; align-items:end; }.range label { flex:1; }.range input { display:block; width:100%; margin-top:5px; border:1px solid #ffffff33; border-radius:10px; padding:10px; color:#fff; background:#06182f; }.range button { padding:10px 12px; }
     .join { padding:20px; background:linear-gradient(140deg,#ffffff16,#ffffff08); }.join h2 { margin:0 0 4px; font-size:1.15rem; }.join p { margin:0 0 14px; color:#b8cee3; font-size:.84rem; }.join-form { display:grid; grid-template-columns:1.2fr .65fr 1.25fr auto; gap:8px; }.join-form input { min-width:0; border:1px solid #ffffff36; border-radius:10px; padding:11px; color:white; background:#06182f; }.admin-contact{margin-top:3px;color:#bfe3ff;font-size:.72rem;text-decoration:none;display:block}.admin-contact:hover{text-decoration:underline}
+    .device-registered-box { display:none; padding:12px 14px; border:1px solid #f8c85b88; border-radius:12px; background:#f8c85b18; color:#ffe8a8; font-size:.86rem; text-align:center; line-height:1.45; }
+    .device-registered-box b { color:#fff; font-size:.95rem; }
+    .device-registered-box span { display:block; color:#95dfba; font-size:1.05rem; font-weight:800; margin:4px 0; }
     .entries { padding:20px; }.entries-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }.entries h2 { margin:0; }.badge { padding:5px 9px; border-radius:99px; color:#0c3258; background:#bfe3ff; font-size:.75rem; font-weight:800; }.entry-list { max-height:163px; overflow:auto; display:grid; gap:7px; padding-right:3px; }.empty { color:#aac3da; text-align:center; padding:19px 4px; font-size:.86rem; }.entry { display:flex; justify-content:space-between; align-items:center; padding:8px 10px; border-radius:10px; background:#ffffff0c; font-size:.84rem; }.number { color:var(--gold); font-weight:800; }
     .prize { padding:20px; text-align:center; }
     .prize-header small { display:block; color:#a9c5df; font-size:.74rem; text-transform:uppercase; letter-spacing:.08em; font-weight:800; }
@@ -76,9 +95,9 @@
     .modal-card input{display:block;width:100%;margin-top:5px;padding:11px;border:1px solid #ffffff33;border-radius:10px;background:#06182f;color:#fff}
     .login-actions{display:flex;justify-content:flex-end;gap:8px}
     .login-error{min-height:18px;margin:5px 0 9px;color:#ffb3a8;font-size:.78rem}
-    .result { display:none; padding:17px; text-align:center; border:1px solid #ffdd83aa; background:linear-gradient(135deg,#bc761e,#7c350e); }.result.show { display:block; animation:pop .45s ease-out; }.result h2 { margin:0 0 4px; color:#fff2c6; }.result p { margin:0; font-size:.9rem; }.result b { color:var(--gold); font-size:1.12rem; } @keyframes pop { from {transform:scale(.9);opacity:0} to {transform:scale(1);opacity:1} }
-    @media(max-width:850px) { .layout{grid-template-columns:1fr}.wheel-stage{min-height:auto;padding:55px 25px 28px}.wheel-wrap{max-width:470px}.pointer{top:30px} }
-    @media(max-width:560px) { .join-form{grid-template-columns:1fr 82px}.join-form input[type=url]{grid-column:1/-1}.join-form button{grid-column:1/-1} } @media(max-width:480px) { .page{padding:22px 14px 32px} header .live{display:none}.wheel-stage{padding-inline:14px}.wheel-wrap{padding:10px}.hub{width:66px;height:66px;font-size:23px;border-width:5px}.title{margin-bottom:21px} }
+    .result { display:none; padding:18px; text-align:center; border:1px solid #00f0ffaa; background:linear-gradient(135deg,#022754,#034282 50%,#001a38); box-shadow:0 0 30px #00f0ff55; border-radius:16px; }.result.show { display:block; animation:pop .45s ease-out; }.result h2 { margin:0 0 4px; color:#00f0ff; text-shadow:0 0 10px #00f0ff; }.result p { margin:0; font-size:.9rem; color:#e0f2fe; }.result b { color:#fff; font-size:1.15rem; text-shadow:0 0 8px #00f0ff; } @keyframes pop { from {transform:scale(.9);opacity:0} to {transform:scale(1);opacity:1} }
+    @media(max-width:850px) { .layout{grid-template-columns:1fr}.wheel-stage{min-height:auto;padding:55px 25px 28px}.wheel-wrap{max-width:470px}.pointer{top:20px} }
+    @media(max-width:560px) { .join-form{grid-template-columns:1fr 82px}.join-form input[type=text],.join-form input[type=url]{grid-column:1/-1}.join-form button{grid-column:1/-1} } @media(max-width:480px) { .page{padding:22px 14px 32px} header{flex-wrap:wrap;gap:10px} .wheel-stage{padding-inline:14px}.wheel-wrap{padding:10px}.hub{width:68px;height:68px;font-size:28px}.title{margin-bottom:21px} }
   </style>
 </head>
 <body>
@@ -86,6 +105,10 @@
     <header>
       <div class="brand"><span class="brand-mark">✦</span>VÒNG QUAY</div>
       <div class="live">
+        <a id="zaloCommunityBtn" class="zalo-community-btn" target="_blank" rel="noopener noreferrer" style="display:none">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.03 2 11c0 2.87 1.5 5.42 3.84 7.02-.17.92-.68 2.5-1.56 3.52 1.94-.13 3.8-.93 5.09-1.92.53.08 1.07.13 1.63.13 5.52 0 10-4.03 10-9s-4.48-9-10-9zm-1.8 11.8H7.9V8.6h2.3v5.2zm4.5 0h-2.3V8.6h2.3v5.2z"/></svg>
+          Tham gia cộng đồng Zalo
+        </a>
         <span class="dot"></span>
         <span id="adminStatus">Sẵn sàng trao giải</span>
         <button id="adminButton" class="admin-action" type="button">Quản trị</button>
@@ -101,8 +124,8 @@
       <section class="panel wheel-stage" aria-label="Vòng quay chọn người chiến thắng">
         <div class="pointer"></div>
         <div class="wheel-wrap">
-          <canvas id="wheel" width="800" height="800" aria-label="Vòng quay có các số đã được chọn"></canvas>
-          <div class="hub">✦</div>
+          <canvas id="wheel" width="800" height="800" aria-label="Vòng quay điện tử có các số đã được chọn"></canvas>
+          <div class="hub" title="Lõi phản ứng lượng tử">⚛</div>
         </div>
         <p class="stage-note" id="stageNote">Hãy thêm người chơi để bắt đầu vòng quay.</p>
         <div class="promo-card" id="promoCard" hidden>
@@ -123,12 +146,27 @@
           </div>
           <div id="promoStatus" style="font-size:0.75rem;color:#bfe3ff;margin-top:6px;min-height:14px;"></div>
         </section>
+
+        <section class="zalo-config admin-only block">
+          <h3>Đường link nút: "Tham gia cộng đồng Zalo"</h3>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="zaloCommunityInput" type="url" placeholder="Nhập link nhóm/cộng đồng Zalo (ví dụ: https://zalo.me/g/...)" style="flex:1;padding:9px;border:1px solid #0088ff55;border-radius:8px;background:#06182f;color:#fff;" />
+            <button id="saveZaloCommunity" class="primary" type="button" style="background:#0068ff;color:#fff;border:1px solid #78baff88;">Lưu link</button>
+            <button id="deleteZaloCommunity" class="danger" type="button" style="padding:9px 10px">Ẩn nút</button>
+          </div>
+          <div id="zaloStatus" style="font-size:0.75rem;color:#8acaff;margin-top:6px;min-height:14px;"></div>
+        </section>
       </section>
 
       <aside class="side">
         <section class="panel countdown">
           <p class="eyebrow">Kết quả tự động quay sau</p>
-          <div id="time">05:00</div>
+          <div class="timer-wrap">
+            <div id="time"><span id="timeMain">00:00</span><span id="timeMs" class="timer-ms">.0</span></div>
+            <div class="timer-progress-track">
+              <div id="timerBar" class="timer-progress-bar"></div>
+            </div>
+          </div>
           <div class="controls admin-only">
             <label>Phút<input id="minutes" class="small-input" type="number" min="0" max="99" value="5" /></label>
             <label>Giây<input id="seconds" class="small-input" type="number" min="0" max="59" value="0" /></label>
@@ -141,21 +179,31 @@
         </section>
 
         <section class="panel settings admin-only block">
-          <h2>Phạm vi số được chọn</h2>
+          <h2>Cấu hình vòng quay &amp; Phạm vi số</h2>
           <div class="range">
             <label>Từ số<input id="minNumber" type="number" value="1" /></label>
-            <label>Đến số<input id="maxNumber" type="number" value="200" /></label>
-            <button class="secondary" id="setRange" type="button">Lưu</button>
+            <label>Đến số<input id="maxNumber" type="number" value="500" /></label>
+            <button class="secondary" id="setRange" type="button">Lưu số</button>
           </div>
+          <div class="range" style="margin-top:12px;padding-top:12px;border-top:1px solid #ffffff15">
+            <label>Thời gian quay vòng (giây)<input id="spinDurationInput" type="number" min="2" max="60" value="6" /></label>
+            <button class="secondary" id="setSpinDuration" type="button">Lưu tốc độ</button>
+          </div>
+          <div id="settingsStatus" style="font-size:0.75rem;color:#70ffb0;margin-top:6px;min-height:14px;"></div>
         </section>
 
         <section class="panel join">
           <h2>Đăng ký số may mắn</h2>
-          <p>Mỗi người chỉ được chọn một số duy nhất.</p>
+          <p id="joinSubtitle">Mỗi người / thiết bị chỉ được chọn một số duy nhất mỗi vòng.</p>
+          <div id="deviceRegisteredNotice" class="device-registered-box">
+            <div>✓ Bạn đã đăng ký thành công cho vòng quay này!</div>
+            <span id="registeredNumberDisplay">Số của bạn: --</span>
+            <small style="color:#d8e8f8">Vui lòng chờ đếm ngược kết thúc để xem kết quả quay thưởng.</small>
+          </div>
           <form class="join-form" id="joinForm">
             <input id="playerName" maxlength="32" placeholder="Tên người chơi" required />
             <input id="chosenNumber" type="number" placeholder="Số" required />
-            <input id="socialLink" type="url" maxlength="200" placeholder="Link Zalo hoặc Facebook (tùy chọn)" />
+            <input id="socialLink" type="text" maxlength="200" placeholder="Số Zalo hoặc link FB (tùy chọn)" />
             <button class="primary" type="submit">Chọn số</button>
           </form>
         </section>
@@ -225,12 +273,86 @@
     let isUploadingPromo = false;
     let isUploadingPrize = false;
     let promoSource = '';
-    let min = 1, max = 200, remaining = 300, timer, rotation = 0, locked = false, isSpinning = false;
+    let zaloCommunityLink = '';
+    let min = 1, max = 500, remaining = 300, spinDuration = 6, timer, rotation = 0, locked = false, isSpinning = false;
+    try {
+      const savedDur = Number(localStorage.getItem('luckySpinDuration'));
+      if (savedDur >= 2 && savedDur <= 60) spinDuration = savedDur;
+    } catch {}
     let targetEndsAt = null, sharedWinner = '', hasEverLoaded = false;
+    let currentRoundId = 1;
+
+    // Quản lý mã định danh thiết bị duy nhất
+    function getOrCreateDeviceId() {
+      try {
+        let id = localStorage.getItem('luckyDeviceId');
+        if (!id) {
+          id = 'dev_' + Date.now() + '_' + Math.random().toString(36).substring(2, 12);
+          localStorage.setItem('luckyDeviceId', id);
+        }
+        return id;
+      } catch {
+        return 'dev_' + Date.now();
+      }
+    }
+    const deviceId = getOrCreateDeviceId();
+
+    function getDeviceChoiceForRound(roundId) {
+      try {
+        const raw = localStorage.getItem(`luckyChoice_round_${roundId}`);
+        return raw ? JSON.parse(raw) : null;
+      } catch {
+        return null;
+      }
+    }
+
+    function saveDeviceChoiceForRound(roundId, choice) {
+      try {
+        localStorage.setItem(`luckyChoice_round_${roundId}`, JSON.stringify(choice));
+      } catch {}
+    }
+
+    function updateDeviceRegistrationUI(s) {
+      const activeRound = s?.roundId || currentRoundId;
+      const myChoice = getDeviceChoiceForRound(activeRound);
+      const isRegistered = Boolean(myChoice);
+
+      const notice = el('deviceRegisteredNotice');
+      const form = el('joinForm');
+      const subtitle = el('joinSubtitle');
+
+      if (isRegistered && !s?.winner) {
+        if (notice) notice.style.display = 'block';
+        if (el('registeredNumberDisplay')) {
+          el('registeredNumberDisplay').textContent = `Số của bạn: ${myChoice.number} (${myChoice.name})`;
+        }
+        if (form) form.style.display = 'none';
+        if (subtitle) subtitle.textContent = 'Thiết bị của bạn đã ghi nhận số tham gia cho vòng này:';
+      } else {
+        if (notice) notice.style.display = 'none';
+        if (form) {
+          form.style.display = 'grid';
+          // Chỉ disable khi vòng quay kết thúc
+          if (!locked) {
+            form.querySelectorAll('input,button').forEach(x => (x.disabled = false));
+          }
+        }
+        if (subtitle) subtitle.textContent = 'Mỗi người / thiết bị chỉ được chọn một số duy nhất mỗi vòng.';
+      }
+    }
     const el = id => document.getElementById(id);
     const canvas = el('wheel');
     const ctx = canvas.getContext('2d');
-    const colors = ['#e85146', '#f4b942', '#1b9c91', '#356db0', '#9c4e99', '#e87d34', '#4f8f4e', '#c84264'];
+    const cyberColors = [
+      { inner: '#041d3b', mid: '#005bb5', outer: '#00e5ff', glow: '#00f0ff' }, // Electron Cyan
+      { inner: '#1d0b38', mid: '#6a0dad', outer: '#a855f7', glow: '#c084fc' }, // Quantum Violet
+      { inner: '#02241b', mid: '#059669', outer: '#10b981', glow: '#34d399' }, // Matrix Emerald
+      { inner: '#07173e', mid: '#1d4ed8', outer: '#3b82f6', glow: '#60a5fa' }, // Plasma Sapphire
+      { inner: '#2a051d', mid: '#be185d', outer: '#ec4899', glow: '#f472b6' }, // Laser Rose
+      { inner: '#261b03', mid: '#d97706', outer: '#fbbf24', glow: '#fde047' }, // Solar Flare
+      { inner: '#032329', mid: '#0891b2', outer: '#06b6d4', glow: '#22d3ee' }, // Ion Teal
+      { inner: '#1c052e', mid: '#9333ea', outer: '#c026d3', glow: '#e879f9' }  // Flux Magenta
+    ];
 
     let audioCtx = null;
     function getAudioCtx() {
@@ -243,22 +365,25 @@
       }
     }
 
-    function playTickSoundEffect() {
+    function playTickSoundEffect(spinSeconds = spinDuration) {
       try {
         const ctx = getAudioCtx();
         if (!ctx) return;
         const now = ctx.currentTime;
+        const dur = Math.max(2, Math.min(60, Number(spinSeconds || 6)));
         let t = 0;
-        let interval = 0.055;
-        for (let i = 0; i < 40; i++) {
+        let interval = 0.052;
+        const totalTicks = Math.round(dur * 7.5);
+        for (let i = 0; i < totalTicks; i++) {
           t += interval;
-          if (t > 5.6) break;
-          interval *= 1.07;
+          if (t > dur - 0.2) break;
+          interval *= 1.055;
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(580 - i * 5, now + t);
-          gain.gain.setValueAtTime(0.04, now + t);
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(780 - (i / totalTicks) * 450, now + t);
+          osc.frequency.exponentialRampToValueAtTime(300, now + t + 0.035);
+          gain.gain.setValueAtTime(0.05, now + t);
           gain.gain.exponentialRampToValueAtTime(0.001, now + t + 0.035);
           osc.connect(gain);
           gain.connect(ctx.destination);
@@ -273,18 +398,18 @@
         const ctx = getAudioCtx();
         if (!ctx) return;
         const now = ctx.currentTime;
-        const notes = [523.25, 659.25, 783.99, 1046.50];
+        const notes = [587.33, 739.99, 880.00, 1174.66, 1479.98];
         notes.forEach((freq, idx) => {
           const osc = ctx.createOscillator();
           const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
-          gain.gain.setValueAtTime(0.08, now + idx * 0.12);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.11);
+          gain.gain.setValueAtTime(0.09, now + idx * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.11 + 0.55);
           osc.connect(gain);
           gain.connect(ctx.destination);
-          osc.start(now + idx * 0.12);
-          osc.stop(now + idx * 0.12 + 0.45);
+          osc.start(now + idx * 0.11);
+          osc.stop(now + idx * 0.11 + 0.6);
         });
       } catch {}
     }
@@ -292,39 +417,204 @@
     function drawWheel() {
       const size = canvas.width, r = size / 2, n = entries.length;
       ctx.clearRect(0, 0, size, size);
+
+      // Khi chưa có người chơi: Vẽ mô hình quỹ đạo nguyên tử Quantum Idle
       if (!n) {
-        ctx.fillStyle = '#164775';
+        // Nền tối không gian lượng tử
+        const bgGrad = ctx.createRadialGradient(r, r, 20, r, r, r);
+        bgGrad.addColorStop(0, '#062040');
+        bgGrad.addColorStop(0.5, '#031024');
+        bgGrad.addColorStop(1, '#010612');
+        ctx.fillStyle = bgGrad;
         ctx.beginPath();
         ctx.arc(r, r, r, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = '#d6e7f5';
-        ctx.font = '700 43px Be Vietnam Pro';
+
+        // Vẽ các vòng quỹ đạo electron Bohr đồng tâm
+        const shells = [120, 200, 280, 355];
+        shells.forEach((sr, idx) => {
+          ctx.beginPath();
+          ctx.arc(r, r, sr, 0, Math.PI * 2);
+          ctx.strokeStyle = idx % 2 === 0 ? 'rgba(0, 240, 255, 0.22)' : 'rgba(0, 150, 255, 0.15)';
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([6, 8]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        });
+
+        // Vẽ 3 quỹ đạo electron nghiêng hình elip đặc trưng của mô hình nguyên tử Rutherford
+        const angles = [0, Math.PI / 3, (2 * Math.PI) / 3];
+        angles.forEach((rot, idx) => {
+          ctx.save();
+          ctx.translate(r, r);
+          ctx.rotate(rot);
+          ctx.beginPath();
+          ctx.ellipse(0, 0, 340, 110, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(0, 240, 255, 0.35)';
+          ctx.lineWidth = 1.8;
+          ctx.stroke();
+
+          // Vẽ hạt electron chuyển động trên mỗi elip
+          const pAngle = (Date.now() / 1200 + idx * 2.1) % (Math.PI * 2);
+          const px = Math.cos(pAngle) * 340;
+          const py = Math.sin(pAngle) * 110;
+          
+          // Vầng hào quang electron
+          const halo = ctx.createRadialGradient(px, py, 2, px, py, 14);
+          halo.addColorStop(0, '#00f0ff');
+          halo.addColorStop(0.4, 'rgba(0, 240, 255, 0.6)');
+          halo.addColorStop(1, 'transparent');
+          ctx.fillStyle = halo;
+          ctx.beginPath();
+          ctx.arc(px, py, 14, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Nhân hạt electron
+          ctx.fillStyle = '#ffffff';
+          ctx.beginPath();
+          ctx.arc(px, py, 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        });
+
+        // Vẽ vành máy gia tốc hạt ngoài cùng
+        drawColliderRing(ctx, r);
+
+        // Chữ công nghệ lượng tử
+        ctx.save();
         ctx.textAlign = 'center';
-        ctx.fillText('CHỜ NGƯỜI CHƠI', r, r + 15);
+        ctx.fillStyle = '#00f0ff';
+        ctx.font = '800 32px "Be Vietnam Pro", sans-serif';
+        ctx.shadowColor = '#00f0ff';
+        ctx.shadowBlur = 12;
+        ctx.fillText('⚛ VÒNG QUAY ĐIỆN TỬ QUANTUM ⚛', r, r - 50);
+
+        ctx.fillStyle = '#8ecaff';
+        ctx.font = '700 20px monospace';
+        ctx.shadowBlur = 6;
+        ctx.fillText('[ TRẠNG THÁI: CHỜ NẠP HẠT ELECTRON ]', r, r + 70);
+
+        ctx.fillStyle = '#bad9f7';
+        ctx.font = '500 16px "Be Vietnam Pro", sans-serif';
+        ctx.shadowBlur = 0;
+        ctx.fillText('Hãy nhập tên & chọn số để kích hoạt quỹ đạo', r, r + 105);
+        ctx.restore();
         return;
       }
+
+      // Khi đã có người chơi: Vẽ các dải năng lượng electron & hạt vi mô
       const a = (Math.PI * 2) / n;
       entries.forEach((item, i) => {
+        const c = cyberColors[i % cyberColors.length];
         const start = i * a - Math.PI / 2;
+        const midAngle = start + a / 2;
+
+        // Vẽ dải năng lượng sector với gradient xuyên tâm
+        const grad = ctx.createRadialGradient(r, r, 45, r, r, r);
+        grad.addColorStop(0, '#020914');
+        grad.addColorStop(0.35, c.inner);
+        grad.addColorStop(0.75, c.mid);
+        grad.addColorStop(1, c.outer);
+
         ctx.beginPath();
         ctx.moveTo(r, r);
-        ctx.arc(r, r, r, start, start + a);
+        ctx.arc(r, r, r - 4, start, start + a);
         ctx.closePath();
-        ctx.fillStyle = colors[i % colors.length];
+        ctx.fillStyle = grad;
         ctx.fill();
-        ctx.strokeStyle = '#fff6cf';
-        ctx.lineWidth = 5;
+
+        // Đường chia tia laser công nghệ cao
+        ctx.strokeStyle = 'rgba(0, 240, 255, 0.45)';
+        ctx.lineWidth = n > 35 ? 1 : 2;
         ctx.stroke();
+
+        // Quỹ đạo electron phụ bên trong mỗi dải
+        if (n <= 36) {
+          ctx.beginPath();
+          ctx.arc(r, r, r * 0.62, start, start + a);
+          ctx.strokeStyle = 'rgba(0, 240, 255, 0.2)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([3, 4]);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+
+        // Vẽ Hạt Electron (Electron Node) ở đầu mỗi sector
+        const particleR = r - 42;
+        const px = r + Math.cos(midAngle) * particleR;
+        const py = r + Math.sin(midAngle) * particleR;
+
+        const halo = ctx.createRadialGradient(px, py, 2, px, py, 11);
+        halo.addColorStop(0, '#ffffff');
+        halo.addColorStop(0.3, c.glow);
+        halo.addColorStop(1, 'transparent');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(px, py, 11, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Vẽ Con Số (Số lượng tử của hạt)
         ctx.save();
         ctx.translate(r, r);
-        ctx.rotate(start + a / 2);
-        ctx.fillStyle = '#fffdf5';
-        ctx.font = `800 ${Math.max(22, Math.min(46, 340 / n))}px Be Vietnam Pro`;
+        ctx.rotate(midAngle);
+        ctx.fillStyle = '#ffffff';
+        ctx.shadowColor = c.glow;
+        ctx.shadowBlur = 10;
+        const fontSize = Math.max(18, Math.min(42, Math.floor(350 / n)));
+        ctx.font = `900 ${fontSize}px "Be Vietnam Pro", monospace, sans-serif`;
         ctx.textAlign = 'right';
         ctx.textBaseline = 'middle';
-        ctx.fillText(item.number, r - 34, 0);
+        ctx.fillText(item.number, r - 66, 0);
         ctx.restore();
       });
+
+      // Vẽ vành máy gia tốc hạt ngoài cùng
+      drawColliderRing(ctx, r);
+    }
+
+    // Hàm vẽ vành gia tốc hạt lượng tử ngoài cùng với vạch đo HUD
+    function drawColliderRing(ctx, r) {
+      ctx.save();
+      // Vành phát sáng ngoài cùng
+      ctx.beginPath();
+      ctx.arc(r, r, r - 5, 0, Math.PI * 2);
+      ctx.strokeStyle = '#00f0ff';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 14;
+      ctx.stroke();
+
+      // Vành phụ bên trong
+      ctx.beginPath();
+      ctx.arc(r, r, r - 20, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(0, 240, 255, 0.4)';
+      ctx.lineWidth = 1.5;
+      ctx.shadowBlur = 0;
+      ctx.stroke();
+
+      // Các vạch đo góc máy gia tốc hạt (Calibration ticks)
+      const ticks = 72;
+      for (let i = 0; i < ticks; i++) {
+        const angle = (i * Math.PI * 2) / ticks;
+        const isMajor = i % 6 === 0;
+        const len = isMajor ? 12 : 6;
+        const x1 = r + Math.cos(angle) * (r - 20);
+        const y1 = r + Math.sin(angle) * (r - 20);
+        const x2 = r + Math.cos(angle) * (r - 20 + len);
+        const y2 = r + Math.sin(angle) * (r - 20 + len);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = isMajor ? '#00f0ff' : 'rgba(0, 240, 255, 0.4)';
+        ctx.lineWidth = isMajor ? 2 : 1;
+        ctx.stroke();
+      }
+      ctx.restore();
     }
 
     function render() {
@@ -332,13 +622,24 @@
       el('count').textContent = `${entries.length} người`;
       const list = el('entryList');
       list.innerHTML = entries.length
-        ? entries.map(x => `<div class="entry"><span>${escapeHtml(x.name)}${admin && x.social ? `<a class="admin-contact" target="_blank" rel="noopener noreferrer" href="${escapeHtml(x.social)}">Mở liên hệ</a>` : ''}</span><span class="number">Số ${x.number}</span></div>`).join('')
+        ? entries.map(x => {
+            let contactHtml = '';
+            if (admin && x.social) {
+              const contact = formatContactInfo(x.social);
+              if (contact && contact.url) {
+                contactHtml = `<a class="admin-contact" target="_blank" rel="noopener noreferrer" href="${escapeHtml(contact.url)}">✆ ${escapeHtml(contact.text)}</a>`;
+              } else if (contact) {
+                contactHtml = `<span class="admin-contact" style="color:#bfe3ff">✆ ${escapeHtml(contact.text)}</span>`;
+              }
+            }
+            return `<div class="entry"><span>${escapeHtml(x.name)}${contactHtml}</span><span class="number">Số ${x.number}</span></div>`;
+          }).join('')
         : '<div class="empty">Chưa có người chơi nào đăng ký.</div>';
       drawWheel();
       if (!isSpinning && !locked) {
         el('stageNote').textContent = entries.length
-          ? `Đã có ${entries.length} số hợp lệ trên vòng quay.`
-          : 'Hãy thêm người chơi để bắt đầu vòng quay.';
+          ? `⚛ Đã nạp ${entries.length} hạt electron vào vòng quay lượng tử.`
+          : '⚛ Hệ thống lượng tử đang chờ nạp hạt electron (người chơi)...';
       }
     }
 
@@ -346,44 +647,100 @@
       return String(v || '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
     }
 
+    let lastSecondRendered = -1;
+    let lastTenthRendered = -1;
+    let totalDurationMs = 300000;
+    let localCountdownEnd = null;
+    let autoSpinTriggered = false;
+
     function formatTime(totalSec) {
       const m = Math.floor(totalSec / 60);
       const s = totalSec % 60;
       return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
     }
 
-    function updateClock() {
-      if (isSpinning) return;
-      if (targetEndsAt) {
-        const left = Math.max(0, Math.ceil((targetEndsAt - Date.now()) / 1000));
-        el('time').textContent = formatTime(left);
-        if (left <= 0 && !sharedWinner && !locked) {
-          if (entries.length > 0) {
-            if (typeof sync === 'function') sync();
-            else spin();
-          } else {
-            el('stageNote').textContent = 'Hết thời gian nhưng chưa có người chơi nào đăng ký.';
-          }
+    function renderTimeDisplay(totalSec, tenths = 0, progressRatio = 0) {
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      const mainStr = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+      const timeMainEl = el('timeMain');
+      if (timeMainEl) {
+        if (totalSec !== lastSecondRendered) {
+          timeMainEl.textContent = mainStr;
+          lastSecondRendered = totalSec;
         }
+      } else {
+        const timeEl = el('time');
+        if (timeEl && totalSec !== lastSecondRendered) {
+          timeEl.textContent = mainStr;
+          lastSecondRendered = totalSec;
+        }
+      }
+
+      const timeMsEl = el('timeMs');
+      if (timeMsEl && tenths !== lastTenthRendered) {
+        timeMsEl.textContent = `.${tenths}`;
+        lastTenthRendered = tenths;
+      }
+
+      const timerBarEl = el('timerBar');
+      if (timerBarEl) {
+        const pct = Math.max(0, Math.min(100, progressRatio * 100));
+        timerBarEl.style.width = pct.toFixed(1) + '%';
+      }
+    }
+
+    function updateClockSmooth() {
+      if (isSpinning) {
+        requestAnimationFrame(updateClockSmooth);
         return;
       }
 
-      el('time').textContent = formatTime(remaining);
-      if (remaining <= 0) {
-        clearInterval(timer);
-        spin();
-        return;
+      // Mục tiêu đếm ngược: server endsAt hoặc localCountdownEnd
+      const activeTarget = (!sharedWinner || !locked) ? (targetEndsAt || localCountdownEnd) : null;
+
+      if (activeTarget) {
+        const now = Date.now();
+        const diffMs = Math.max(0, activeTarget - now);
+        const totalSec = Math.floor(diffMs / 1000);
+        const tenths = Math.floor((diffMs % 1000) / 100);
+        const ratio = totalDurationMs > 0 ? (diffMs / totalDurationMs) : 0;
+
+        renderTimeDisplay(totalSec, tenths, ratio);
+
+        if (diffMs <= 0) {
+          if (!autoSpinTriggered && !sharedWinner && !locked) {
+            autoSpinTriggered = true;
+            if (entries.length > 0) {
+              if (typeof sync === 'function') sync();
+              else spin();
+            } else {
+              el('stageNote').textContent = 'Hết thời gian nhưng chưa có người chơi nào đăng ký.';
+            }
+          }
+        }
+      } else {
+        renderTimeDisplay(0, 0, 0);
       }
-      remaining--;
+
+      requestAnimationFrame(updateClockSmooth);
+    }
+    requestAnimationFrame(updateClockSmooth);
+
+    function updateClock() {
+      // Đã được vận hành mượt mà 60fps qua updateClockSmooth
     }
 
     function setCountdown() {
       if (locked || isSpinning) return;
       targetEndsAt = null;
-      remaining = Math.max(0, Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0));
-      clearInterval(timer);
-      updateClock();
-      if (remaining > 0) timer = setInterval(updateClock, 1000);
+      autoSpinTriggered = false;
+      const sec = Math.max(0, Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0));
+      totalDurationMs = Math.max(1000, sec * 1000);
+      localCountdownEnd = sec > 0 ? (Date.now() + totalDurationMs) : null;
+      lastSecondRendered = -1;
+      lastTenthRendered = -1;
     }
 
     function spinToWinner(winner, animate = true) {
@@ -406,31 +763,34 @@
       let forwardDelta = targetRemainder - currentRemainder;
       if (forwardDelta <= 0) forwardDelta += 360;
 
-      rotation += 360 * 6 + forwardDelta;
+      // Số vòng quay dựa theo thời gian quay
+      const dur = Math.max(2, Math.min(60, Number(spinDuration || 6)));
+      const fullRevolutions = Math.max(4, Math.round(dur * 1.25));
+      rotation += 360 * fullRevolutions + forwardDelta;
 
       if (!animate) {
         canvas.style.transition = 'none';
         canvas.style.transform = `rotate(${rotation}deg)`;
         void canvas.offsetWidth;
-        el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(winner.name)}</b> đã trúng <b>số ${winner.number}</b> và nhận giải thưởng.</p>`;
+        el('result').innerHTML = `<h2>⚛ Hạt Electron Trúng Thưởng!</h2><p>Chúc mừng <b>${escapeHtml(winner.name)}</b> đã kích hoạt chính xác <b>hạt electron số ${winner.number}</b> và nhận giải thưởng.</p>`;
         el('result').classList.add('show');
-        el('stageNote').textContent = `Kết quả: Chúc mừng người chơi ${escapeHtml(winner.name)} (Số ${winner.number})!`;
+        el('stageNote').textContent = `⚛ Kết quả lượng tử: Chúc mừng người chơi ${escapeHtml(winner.name)} (Số ${winner.number})!`;
         return;
       }
 
       isSpinning = true;
-      canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
+      canvas.style.transition = `transform ${dur}s cubic-bezier(0.12, 0.8, 0.15, 1)`;
       canvas.style.transform = `rotate(${rotation}deg)`;
-      el('stageNote').textContent = '🎡 Vòng quay đang quay chọn người may mắn…';
-      playTickSoundEffect();
+      el('stageNote').textContent = `⚛ Máy gia tốc hạt đang vận hành (${dur}s)... Đang quét hạt electron may mắn!`;
+      playTickSoundEffect(dur);
 
       setTimeout(() => {
         isSpinning = false;
-        el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(winner.name)}</b> đã trúng <b>số ${winner.number}</b> và nhận giải thưởng.</p>`;
+        el('result').innerHTML = `<h2>⚛ Hạt Electron Trúng Thưởng!</h2><p>Chúc mừng <b>${escapeHtml(winner.name)}</b> đã kích hoạt chính xác <b>hạt electron số ${winner.number}</b> và nhận giải thưởng.</p>`;
         el('result').classList.add('show');
-        el('stageNote').textContent = `Kết quả: Chúc mừng ${escapeHtml(winner.name)} (Số ${winner.number})!`;
+        el('stageNote').textContent = `⚛ Kết quả lượng tử: Chúc mừng ${escapeHtml(winner.name)} (Số ${winner.number})!`;
         playWinSoundEffect();
-      }, 5800);
+      }, dur * 1000 + 100);
     }
 
     function spin() {
@@ -446,15 +806,17 @@
 
     el('joinForm').addEventListener('submit', e => {
       e.preventDefault();
-      if (locked || isSpinning) return;
-      const name = el('playerName').value.trim();
-      const number = Number(el('chosenNumber').value);
-      const social = safeUrl(el('socialLink').value);
-      if (!name) return;
-      if (el('socialLink').value.trim() && !social) {
-        alert('Link liên hệ cần bắt đầu bằng http:// hoặc https://.');
+      if (locked) return;
+      const activeRound = currentRoundId || 1;
+      const registered = getDeviceChoiceForRound(activeRound);
+      if (registered) {
+        alert(`Thiết bị này đã đăng ký số ${registered.number} cho vòng này rồi!`);
         return;
       }
+      const name = el('playerName').value.trim();
+      const number = Number(el('chosenNumber').value);
+      const social = el('socialLink').value.trim();
+      if (!name) return;
       if (!Number.isInteger(number) || number < min || number > max) {
         alert(`Vui lòng chọn số nguyên từ ${min} đến ${max}.`);
         return;
@@ -467,13 +829,15 @@
         alert('Mỗi người chơi chỉ được đăng ký một số.');
         return;
       }
-      entries.push({ name, number, social });
+      entries.push({ name, number, social, deviceId });
       entries.sort((a, b) => a.number - b.number);
+      saveDeviceChoiceForRound(activeRound, { name, number });
       el('joinForm').reset();
+      updateDeviceRegistrationUI({ roundId: activeRound });
       render();
     });
 
-    el('setRange').addEventListener('click', () => {
+    el('setRange').addEventListener('click', async () => {
       const a = Number(el('minNumber').value), b = Number(el('maxNumber').value);
       if (!Number.isInteger(a) || !Number.isInteger(b) || a > b) {
         alert('Phạm vi số chưa hợp lệ.');
@@ -483,12 +847,61 @@
       el('chosenNumber').min = min;
       el('chosenNumber').max = max;
       el('stageNote').textContent = `Có thể chọn các số từ ${min} đến ${max}.`;
+
+      if (serverToken) {
+        try {
+          el('settingsStatus').textContent = 'Đang lưu phạm vi số lên máy chủ...';
+          const s = await request('/api/admin/config', {
+            method: 'POST',
+            body: JSON.stringify({
+              min: a,
+              max: b,
+              seconds: targetEndsAt ? Math.max(0, Math.ceil((targetEndsAt - Date.now()) / 1000)) : 300,
+              spinDuration: spinDuration
+            })
+          });
+          applyShared(s);
+          el('settingsStatus').textContent = `✓ Đã lưu phạm vi số từ ${a} đến ${b}!`;
+        } catch (err) {
+          alert('Lỗi khi lưu phạm vi số: ' + err.message);
+          el('settingsStatus').textContent = 'Lỗi: ' + err.message;
+        }
+      } else {
+        el('settingsStatus').textContent = `Đã lưu phạm vi từ ${min} đến ${max} trên thiết bị này.`;
+      }
+    });
+
+    el('setSpinDuration').addEventListener('click', async () => {
+      const val = Number(el('spinDurationInput').value);
+      if (!Number.isInteger(val) || val < 2 || val > 60) {
+        alert('Thời gian quay phải là số nguyên từ 2 đến 60 giây.');
+        return;
+      }
+      spinDuration = val;
+      try { localStorage.setItem('luckySpinDuration', String(val)); } catch {}
+
+      if (serverToken) {
+        try {
+          el('settingsStatus').textContent = 'Đang đồng bộ tốc độ quay...';
+          const s = await request('/api/admin/spin-duration', {
+            method: 'POST',
+            body: JSON.stringify({ spinDuration: val })
+          });
+          applyShared(s);
+          el('settingsStatus').textContent = `✓ Đã lưu thời gian quay: ${val} giây!`;
+        } catch (err) {
+          alert('Lỗi lưu thời gian quay: ' + err.message);
+          el('settingsStatus').textContent = 'Lỗi: ' + err.message;
+        }
+      } else {
+        el('settingsStatus').textContent = `Đã lưu thời gian quay ${val} giây trên thiết bị này.`;
+      }
     });
 
     const DEFAULT_PRIZE_IMAGE = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="18" fill="%230b2c52"/><rect x="20" y="42" width="60" height="42" rx="6" fill="%23f8c85b"/><rect x="16" y="32" width="68" height="13" rx="4" fill="%23e5a93b"/><rect x="45" y="32" width="10" height="52" fill="%23c93b32"/><path d="M50 32c-6-15-22-12-16 0 5 8 16 0 16 0z" fill="%23c93b32"/><path d="M50 32c6-15 22-12 16 0-5 8-16 0-16 0z" fill="%23c93b32"/><circle cx="50" cy="32" r="4" fill="%23f8c85b"/></svg>';
     el('prizeImage').src = DEFAULT_PRIZE_IMAGE;
 
-    function compressImage(file, maxWidth, maxHeight, quality = 0.86) {
+    function compressImage(file, maxWidth, maxHeight, quality = 0.82) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = e => {
@@ -579,6 +992,34 @@
       } catch {
         return '';
       }
+    }
+
+    // Xử lý thông tin liên hệ: nếu nhập số điện thoại Zalo thì tạo link zalo.me, nếu nhập link fb/web thì mở trực tiếp
+    function formatContactInfo(value) {
+      if (!value) return null;
+      const raw = String(value).trim();
+      if (!raw) return null;
+      // Kiểm tra nếu là số điện thoại (chỉ chứa số, dấu +, dấu cách)
+      const phoneDigits = raw.replace(/[\s\-\.]/g, '');
+      if (/^(\+?84|0)[3|5|7|8|9][0-9]{8}$/.test(phoneDigits) || /^[0-9]{9,11}$/.test(phoneDigits)) {
+        const standardPhone = phoneDigits.replace(/^\+84/, '0');
+        return {
+          text: `Zalo: ${raw}`,
+          url: `https://zalo.me/${standardPhone}`
+        };
+      }
+      // Nếu là link http/https hoặc link facebook.com, zalo.me...
+      const url = safeUrl(raw);
+      if (url) {
+        return {
+          text: raw.length > 25 ? raw.slice(0, 22) + '...' : raw,
+          url: url
+        };
+      }
+      return {
+        text: raw,
+        url: ''
+      };
     }
 
     function renderPromo() {
@@ -683,6 +1124,67 @@
       }
     });
 
+    function renderZaloCommunity() {
+      const btn = el('zaloCommunityBtn');
+      const input = el('zaloCommunityInput');
+      const link = safeUrl(zaloCommunityLink);
+      if (input && zaloCommunityLink) input.value = zaloCommunityLink;
+      if (link) {
+        btn.href = link;
+        btn.style.display = 'inline-flex';
+      } else {
+        btn.removeAttribute('href');
+        btn.style.display = 'none';
+      }
+    }
+
+    el('saveZaloCommunity').addEventListener('click', async () => {
+      const raw = el('zaloCommunityInput').value.trim();
+      const url = safeUrl(raw);
+      if (raw && !url) {
+        alert('Vui lòng nhập đường link Zalo hợp lệ (ví dụ: https://zalo.me/g/...)');
+        return;
+      }
+      zaloCommunityLink = url;
+      renderZaloCommunity();
+      localStorage.setItem('luckyZaloCommunityUrl', url);
+      if (serverToken) {
+        try {
+          el('zaloStatus').textContent = 'Đang lưu lên máy chủ...';
+          const s = await request('/api/admin/media', {
+            method: 'POST',
+            body: JSON.stringify({ zaloCommunityUrl: url })
+          });
+          applyShared(s);
+          el('zaloStatus').textContent = '✓ Đã lưu link cộng đồng Zalo thành công!';
+        } catch (err) {
+          alert('Lỗi khi lưu link: ' + err.message);
+          el('zaloStatus').textContent = 'Lỗi: ' + err.message;
+        }
+      } else {
+        el('zaloStatus').textContent = 'Đã lưu trên máy này. Đăng nhập Quản trị để đồng bộ cho tất cả người chơi.';
+      }
+    });
+
+    el('deleteZaloCommunity').addEventListener('click', async () => {
+      zaloCommunityLink = '';
+      el('zaloCommunityInput').value = '';
+      renderZaloCommunity();
+      localStorage.removeItem('luckyZaloCommunityUrl');
+      if (serverToken) {
+        try {
+          const s = await request('/api/admin/media', {
+            method: 'POST',
+            body: JSON.stringify({ zaloCommunityUrl: '' })
+          });
+          applyShared(s);
+          el('zaloStatus').textContent = 'Đã ẩn nút cộng đồng Zalo.';
+        } catch (err) {}
+      } else {
+        el('zaloStatus').textContent = 'Đã ẩn nút trên thiết bị này.';
+      }
+    });
+
     el('spinNow').addEventListener('click', spin);
     el('resetRound').addEventListener('click', () => {
       if (!document.body.classList.contains('is-admin')) return;
@@ -695,7 +1197,7 @@
       canvas.style.transition = 'none';
       canvas.style.transform = 'rotate(0deg)';
       void canvas.offsetWidth;
-      canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
+      canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
       el('result').classList.remove('show');
       el('result').innerHTML = '';
       el('joinForm').reset();
@@ -853,15 +1355,40 @@
         }
       }
 
-      targetEndsAt = s.endsAt;
-      if (!s.endsAt && !s.winner) {
-        el('time').textContent = '00:00';
-      } else if (s.endsAt && !s.winner && !isSpinning) {
-        const left = Math.max(0, Math.ceil((s.endsAt - Date.now()) / 1000));
-        el('time').textContent = formatTime(left);
+      // Đồng bộ link nút "Tham gia cộng đồng Zalo"
+      if (s.zaloCommunityUrl !== undefined) {
+        zaloCommunityLink = s.zaloCommunityUrl || '';
+      } else {
+        zaloCommunityLink = localStorage.getItem('luckyZaloCommunityUrl') || '';
+      }
+      renderZaloCommunity();
+
+      if (s.spinDuration) {
+        spinDuration = Number(s.spinDuration);
+        const spinInput = el('spinDurationInput');
+        if (spinInput && document.activeElement !== spinInput) {
+          spinInput.value = spinDuration;
+        }
+      }
+
+      if (s.endsAt !== targetEndsAt) {
+        targetEndsAt = s.endsAt;
+        autoSpinTriggered = false;
+        lastSecondRendered = -1;
+        lastTenthRendered = -1;
+        if (targetEndsAt && targetEndsAt > Date.now()) {
+          totalDurationMs = Math.max(1000, targetEndsAt - Date.now());
+        }
+      }
+      if (s.roundId && s.roundId !== currentRoundId) {
+        currentRoundId = s.roundId;
+        autoSpinTriggered = false;
+        lastSecondRendered = -1;
+        lastTenthRendered = -1;
       }
 
       render();
+      updateDeviceRegistrationUI(s);
 
       if (s.winner) {
         const key = `${s.winner.name}:${s.winner.number}`;
@@ -886,15 +1413,15 @@
           canvas.style.transition = 'none';
           canvas.style.transform = 'rotate(0deg)';
           void canvas.offsetWidth;
-          canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
+          canvas.style.transition = `transform ${spinDuration}s cubic-bezier(0.12, 0.8, 0.15, 1)`;
           el('result').classList.remove('show');
           el('result').innerHTML = '';
-          el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
           el('stageNote').textContent = entries.length
-            ? `Đã có ${entries.length} số hợp lệ trên vòng quay.`
-            : 'Hãy thêm người chơi để bắt đầu vòng quay.';
+            ? `⚛ Đã nạp ${entries.length} hạt electron vào vòng quay lượng tử.`
+            : '⚛ Hệ thống lượng tử đang chờ nạp hạt electron (người chơi)...';
         }
       }
+      updateDeviceRegistrationUI(s);
       hasEverLoaded = true;
     }
 
@@ -908,22 +1435,30 @@
       try {
         await request('/api/state');
         clearInterval(timer);
-        // Duy trì nhịp đếm mỗi giây để đồng hồ giảm mượt mà
-        timer = setInterval(updateClock, 1000);
         await sync();
         setInterval(sync, 2000);
 
         el('joinForm').addEventListener('submit', async event => {
           event.preventDefault();
           event.stopImmediatePropagation();
+
+          const activeRound = currentRoundId || 1;
+          const registered = getDeviceChoiceForRound(activeRound);
+          if (registered) {
+            alert(`Thiết bị của bạn đã chọn số ${registered.number} cho vòng này rồi!`);
+            return;
+          }
+
           const name = el('playerName').value.trim();
           const number = Number(el('chosenNumber').value);
-          const social = safeUrl(el('socialLink').value);
+          const social = el('socialLink').value.trim();
           try {
-            applyShared(await request('/api/join', {
+            const updated = await request('/api/join', {
               method: 'POST',
-              body: JSON.stringify({ name, number, social })
-            }));
+              body: JSON.stringify({ name, number, social, deviceId })
+            });
+            saveDeviceChoiceForRound(activeRound, { name, number });
+            applyShared(updated);
             el('joinForm').reset();
           } catch (error) {
             alert(error.message);
@@ -954,10 +1489,14 @@
             const localPrize = localStorage.getItem('luckyPrizeImage');
             const localPromo = localStorage.getItem('luckyPromoImage');
             const localPromoUrl = localStorage.getItem('luckyPromoUrl');
+            const localZalo = localStorage.getItem('luckyZaloCommunityUrl');
             if (!curState.prizeImage && localPrize) patch.prizeImage = localPrize;
             if (!curState.promoImage && localPromo) {
               patch.promoImage = localPromo;
               patch.promoUrl = localPromoUrl || '';
+            }
+            if (!curState.zaloCommunityUrl && localZalo) {
+              patch.zaloCommunityUrl = localZalo;
             }
             if (Object.keys(patch).length > 0) {
               const updated = await request('/api/admin/media', {
@@ -974,12 +1513,18 @@
         el('setTimer').addEventListener('click', async event => {
           event.stopImmediatePropagation();
           try {
+            const sec = Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0);
+            totalDurationMs = Math.max(1000, sec * 1000);
+            autoSpinTriggered = false;
+            lastSecondRendered = -1;
+            lastTenthRendered = -1;
             applyShared(await request('/api/admin/config', {
               method: 'POST',
               body: JSON.stringify({
                 min: Number(el('minNumber').value),
                 max: Number(el('maxNumber').value),
-                seconds: Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0)
+                seconds: sec,
+                spinDuration: spinDuration
               })
             }));
           } catch (error) {
@@ -1004,10 +1549,15 @@
             isSpinning = false;
             sharedWinner = '';
             rotation = 0;
+            targetEndsAt = null;
+            localCountdownEnd = null;
+            autoSpinTriggered = false;
+            lastSecondRendered = -1;
+            lastTenthRendered = -1;
             canvas.style.transition = 'none';
             canvas.style.transform = 'rotate(0deg)';
             void canvas.offsetWidth;
-            canvas.style.transition = 'transform 5.7s cubic-bezier(0.13, 0.78, 0.12, 1)';
+            canvas.style.transition = `transform ${spinDuration}s cubic-bezier(0.12, 0.8, 0.15, 1)`;
             el('result').classList.remove('show');
             el('result').innerHTML = '';
             el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
