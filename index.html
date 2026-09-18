@@ -28,7 +28,7 @@
     .wheel-stage { min-height:625px; padding:27px 25px; position:relative; overflow:hidden; display:grid; place-items:center; }
     .pointer { position:absolute; top:30px; z-index:3; width:0; height:0; border-left:22px solid transparent; border-right:22px solid transparent; border-top:43px solid var(--red); filter:drop-shadow(0 5px 3px #0008); }
     .wheel-wrap { position:relative; width:min(100%,500px); aspect-ratio:1; border-radius:50%; padding:14px; background:linear-gradient(135deg,#ffe596,#a96a16); box-shadow:0 0 0 7px #fff0b6,0 0 0 12px #9b641a,0 23px 45px #0008; }
-    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.7s cubic-bezier(.13,.78,.12,1); background:#164775; }
+    #wheel { width:100%; height:100%; border-radius:50%; display:block; transition:transform 5.8s cubic-bezier(.12,.8,.15,1); background:#164775; }
     .hub { pointer-events:none; position:absolute; inset:50% auto auto 50%; transform:translate(-50%,-50%); width:84px; height:84px; border:7px solid #fff0b6; border-radius:50%; display:grid; place-items:center; background:var(--gold); color:#44270d; font-size:28px; box-shadow:0 4px 14px #0007; }
     .stage-note { margin:20px 0 0; color:#c9dbef; text-align:center; font-size:.92rem; }
     .promo-card { width:min(100%,450px); margin-top:18px; overflow:hidden; border:2px solid #f8c85b; border-radius:14px; background:#06182f; box-shadow:0 8px 24px #0006; text-align:center; transition:transform .2s ease; }
@@ -190,11 +190,69 @@
     const entries = [];
     const ADMIN_USER = 'vtclonefootball';
     const ADMIN_HASH = 'b6ee0a839a49003d499bbcd2cabc29017dbcd762f802e33d92037145073ffb56';
-    let min = 1, max = 200, remaining = 300, timer, rotation = 0, locked = false;
+    let min = 1, max = 200, remaining = 300, timer, rotation = 0, locked = false, isSpinning = false;
+    let targetEndsAt = null, sharedWinner = '', hasEverLoaded = false;
     const el = id => document.getElementById(id);
     const canvas = el('wheel');
     const ctx = canvas.getContext('2d');
     const colors = ['#e85146', '#f4b942', '#1b9c91', '#356db0', '#9c4e99', '#e87d34', '#4f8f4e', '#c84264'];
+
+    let audioCtx = null;
+    function getAudioCtx() {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        return audioCtx;
+      } catch {
+        return null;
+      }
+    }
+
+    function playTickSoundEffect() {
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        let t = 0;
+        let interval = 0.055;
+        for (let i = 0; i < 40; i++) {
+          t += interval;
+          if (t > 5.6) break;
+          interval *= 1.07;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(580 - i * 5, now + t);
+          gain.gain.setValueAtTime(0.04, now + t);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + t + 0.035);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + t);
+          osc.stop(now + t + 0.04);
+        }
+      } catch {}
+    }
+
+    function playWinSoundEffect() {
+      try {
+        const ctx = getAudioCtx();
+        if (!ctx) return;
+        const now = ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.08, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.45);
+        });
+      } catch {}
+    }
 
     function drawWheel() {
       const size = canvas.width, r = size / 2, n = entries.length;
@@ -242,18 +300,40 @@
         ? entries.map(x => `<div class="entry"><span>${escapeHtml(x.name)}${admin && x.social ? `<a class="admin-contact" target="_blank" rel="noopener noreferrer" href="${escapeHtml(x.social)}">Mở liên hệ</a>` : ''}</span><span class="number">Số ${x.number}</span></div>`).join('')
         : '<div class="empty">Chưa có người chơi nào đăng ký.</div>';
       drawWheel();
-      el('stageNote').textContent = entries.length
-        ? `Đã có ${entries.length} số hợp lệ trên vòng quay.`
-        : 'Hãy thêm người chơi để bắt đầu vòng quay.';
+      if (!isSpinning && !locked) {
+        el('stageNote').textContent = entries.length
+          ? `Đã có ${entries.length} số hợp lệ trên vòng quay.`
+          : 'Hãy thêm người chơi để bắt đầu vòng quay.';
+      }
     }
 
     function escapeHtml(v) {
       return String(v || '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
     }
 
+    function formatTime(totalSec) {
+      const m = Math.floor(totalSec / 60);
+      const s = totalSec % 60;
+      return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
     function updateClock() {
-      const m = Math.floor(remaining / 60), s = remaining % 60;
-      el('time').textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      if (isSpinning) return;
+      if (targetEndsAt) {
+        const left = Math.max(0, Math.ceil((targetEndsAt - Date.now()) / 1000));
+        el('time').textContent = formatTime(left);
+        if (left <= 0 && !sharedWinner && !locked) {
+          if (entries.length > 0) {
+            if (typeof sync === 'function') sync();
+            else spin();
+          } else {
+            el('stageNote').textContent = 'Hết thời gian nhưng chưa có người chơi nào đăng ký.';
+          }
+        }
+        return;
+      }
+
+      el('time').textContent = formatTime(remaining);
       if (remaining <= 0) {
         clearInterval(timer);
         spin();
@@ -263,38 +343,75 @@
     }
 
     function setCountdown() {
-      if (locked) return;
+      if (locked || isSpinning) return;
+      targetEndsAt = null;
       remaining = Math.max(0, Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0));
       clearInterval(timer);
       updateClock();
       if (remaining > 0) timer = setInterval(updateClock, 1000);
     }
 
+    function spinToWinner(winner, animate = true) {
+      if (!entries.length) return;
+      locked = true;
+      el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = true));
+
+      let winnerIndex = entries.findIndex(x => x.number === winner.number && x.name === winner.name);
+      if (winnerIndex === -1) {
+        winnerIndex = entries.findIndex(x => x.number === winner.number);
+      }
+      if (winnerIndex === -1) winnerIndex = 0;
+
+      const n = entries.length;
+      const a = 360 / n;
+      let targetRemainder = (-(winnerIndex + 0.5) * a) % 360;
+      if (targetRemainder < 0) targetRemainder += 360;
+      let currentRemainder = rotation % 360;
+      if (currentRemainder < 0) currentRemainder += 360;
+      let forwardDelta = targetRemainder - currentRemainder;
+      if (forwardDelta <= 0) forwardDelta += 360;
+
+      rotation += 360 * 6 + forwardDelta;
+
+      if (!animate) {
+        canvas.style.transition = 'none';
+        canvas.style.transform = `rotate(${rotation}deg)`;
+        void canvas.offsetWidth;
+        el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(winner.name)}</b> đã trúng <b>số ${winner.number}</b> và nhận giải thưởng.</p>`;
+        el('result').classList.add('show');
+        el('stageNote').textContent = `Kết quả: Chúc mừng người chơi ${escapeHtml(winner.name)} (Số ${winner.number})!`;
+        return;
+      }
+
+      isSpinning = true;
+      canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+      canvas.style.transform = `rotate(${rotation}deg)`;
+      el('stageNote').textContent = '🎡 Vòng quay đang quay chọn người may mắn…';
+      playTickSoundEffect();
+
+      setTimeout(() => {
+        isSpinning = false;
+        el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(winner.name)}</b> đã trúng <b>số ${winner.number}</b> và nhận giải thưởng.</p>`;
+        el('result').classList.add('show');
+        el('stageNote').textContent = `Kết quả: Chúc mừng ${escapeHtml(winner.name)} (Số ${winner.number})!`;
+        playWinSoundEffect();
+      }, 5900);
+    }
+
     function spin() {
-      if (locked) return;
+      if (locked || isSpinning) return;
       if (!entries.length) {
         el('stageNote').textContent = 'Chưa có số nào để quay. Hãy đăng ký ít nhất một người chơi.';
         return;
       }
-      locked = true;
       clearInterval(timer);
-      const winnerIndex = Math.floor(Math.random() * entries.length);
-      const winner = entries[winnerIndex];
-      const a = 360 / entries.length;
-      rotation += 1440 + (-90 - (winnerIndex + 0.5) * a) - (rotation % 360);
-      canvas.style.transform = `rotate(${rotation}deg)`;
-      el('stageNote').textContent = 'Vòng quay đang chọn người may mắn…';
-      setTimeout(() => {
-        el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(winner.name)}</b> đã trúng <b>số ${winner.number}</b> và nhận giải thưởng.</p>`;
-        el('result').classList.add('show');
-        el('stageNote').textContent = 'Kết quả đã được xác định.';
-        el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = true));
-      }, 5800);
+      const winner = entries[Math.floor(Math.random() * entries.length)];
+      spinToWinner(winner, true);
     }
 
     el('joinForm').addEventListener('submit', e => {
       e.preventDefault();
-      if (locked) return;
+      if (locked || isSpinning) return;
       const name = el('playerName').value.trim();
       const number = Number(el('chosenNumber').value);
       const social = safeUrl(el('socialLink').value);
@@ -509,14 +626,16 @@
     el('spinNow').addEventListener('click', spin);
     el('resetRound').addEventListener('click', () => {
       if (!document.body.classList.contains('is-admin')) return;
-      clearInterval(timer);
       entries.splice(0);
       locked = false;
+      isSpinning = false;
+      sharedWinner = '';
+      targetEndsAt = null;
       rotation = 0;
       canvas.style.transition = 'none';
       canvas.style.transform = 'rotate(0deg)';
       void canvas.offsetWidth;
-      canvas.style.transition = '';
+      canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
       el('result').classList.remove('show');
       el('result').innerHTML = '';
       el('joinForm').reset();
@@ -591,7 +710,7 @@
     setCountdown();
 
     // Khi trang được mở qua máy chủ, phần bên dưới đồng bộ dữ liệu chung cho mọi thiết bị.
-    let serverToken = sessionStorage.getItem('luckyAdminToken') || '', sharedWinner = '';
+    let serverToken = sessionStorage.getItem('luckyAdminToken') || '';
     async function request(path, options = {}) {
       const response = await fetch(path, {
         ...options,
@@ -633,19 +752,49 @@
         el('promoCard').hidden = true;
       }
 
-      const left = s.endsAt && !s.winner ? Math.max(0, Math.ceil((s.endsAt - Date.now()) / 1000)) : 0;
-      el('time').textContent = `${String(Math.floor(left / 60)).padStart(2, '0')}:${String(left % 60).padStart(2, '0')}`;
+      targetEndsAt = s.endsAt;
+      if (!s.endsAt && !s.winner) {
+        el('time').textContent = '00:00';
+      } else if (s.endsAt && !s.winner && !isSpinning) {
+        const left = Math.max(0, Math.ceil((s.endsAt - Date.now()) / 1000));
+        el('time').textContent = formatTime(left);
+      }
+
       render();
+
       if (s.winner) {
         const key = `${s.winner.name}:${s.winner.number}`;
         if (key !== sharedWinner) {
           sharedWinner = key;
-          locked = true;
-          el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = true));
-          el('result').innerHTML = `<h2>🎉 Chúc mừng!</h2><p><b>${escapeHtml(s.winner.name)}</b> đã trúng <b>số ${s.winner.number}</b> và nhận giải thưởng.</p>`;
-          el('result').classList.add('show');
+          const endedRecently = s.endsAt && (Date.now() - s.endsAt < 30000);
+          // Nếu vòng quay vừa kết thúc hoặc người dùng đang mở trang: kích hoạt hiệu ứng xoay
+          if (endedRecently || hasEverLoaded) {
+            spinToWinner(s.winner, true);
+          } else {
+            // Người chơi vào trang sau khi vòng đã kết thúc từ lâu
+            spinToWinner(s.winner, false);
+          }
+        }
+      } else {
+        // Vòng quay đang hoạt động hoặc Admin vừa bấm Reset
+        if (sharedWinner) {
+          sharedWinner = '';
+          locked = false;
+          isSpinning = false;
+          rotation = 0;
+          canvas.style.transition = 'none';
+          canvas.style.transform = 'rotate(0deg)';
+          void canvas.offsetWidth;
+          canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
+          el('result').classList.remove('show');
+          el('result').innerHTML = '';
+          el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
+          el('stageNote').textContent = entries.length
+            ? `Đã có ${entries.length} số hợp lệ trên vòng quay.`
+            : 'Hãy thêm người chơi để bắt đầu vòng quay.';
         }
       }
+      hasEverLoaded = true;
     }
 
     async function sync() {
@@ -658,6 +807,8 @@
       try {
         await request('/api/state');
         clearInterval(timer);
+        // Duy trì nhịp đếm mỗi giây để đồng hồ giảm mượt mà
+        timer = setInterval(updateClock, 1000);
         await sync();
         setInterval(sync, 2000);
 
@@ -749,8 +900,15 @@
           try {
             const s = await request('/api/admin/reset', { method: 'POST', body: '{}' });
             locked = false;
+            isSpinning = false;
             sharedWinner = '';
+            rotation = 0;
+            canvas.style.transition = 'none';
+            canvas.style.transform = 'rotate(0deg)';
+            void canvas.offsetWidth;
+            canvas.style.transition = 'transform 5.8s cubic-bezier(0.12, 0.8, 0.15, 1)';
             el('result').classList.remove('show');
+            el('result').innerHTML = '';
             el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
             applyShared(s);
           } catch (error) {
