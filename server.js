@@ -44,6 +44,8 @@ const defaultState = {
   min: 1,
   max: 500,
   spinDuration: 6,
+  totalDuration: 300000,
+  startedAt: null,
   endsAt: null,
   winner: null,
   prizeImage: null,
@@ -59,6 +61,7 @@ function state() {
       current = { ...defaultState, ...JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')) };
       if (!current.roundId) current.roundId = 1;
       if (!current.spinDuration) current.spinDuration = 6;
+      if (!current.totalDuration) current.totalDuration = 300000;
     } else {
       current = { ...defaultState };
     }
@@ -66,21 +69,34 @@ function state() {
     current = { ...defaultState };
   }
 
+  // Khởi tạo thời gian đếm ngược mặc định đồng bộ nếu vòng đang mở và chưa có endsAt
+  if (!current.winner && !current.endsAt) {
+    current.totalDuration = current.totalDuration || 300000;
+    current.startedAt = Date.now();
+    current.endsAt = current.startedAt + current.totalDuration;
+    save(current);
+  }
+
   if (current.endsAt && !current.winner && Date.now() >= current.endsAt) {
     if (current.entries && current.entries.length) {
       current.winner = current.entries[Math.floor(Math.random() * current.entries.length)];
       current.endsAt = Date.now();
     } else {
-      current.endsAt = null;
+      current.endsAt = Date.now();
     }
     save(current);
   }
-  return current;
+  return {
+    ...current,
+    serverNow: Date.now()
+  };
 }
 
 function save(value) {
   try {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(value, null, 2));
+    const toSave = { ...value };
+    delete toSave.serverNow;
+    fs.writeFileSync(DATA_FILE, JSON.stringify(toSave, null, 2));
   } catch (err) {
     console.error('Lỗi khi ghi dữ liệu round-data.json:', err.message);
   }
@@ -89,8 +105,15 @@ function save(value) {
 function json(res, status, value) {
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
-    'Cache-Control': 'no-store'
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
   });
+  if (value && typeof value === 'object' && !Array.isArray(value)) {
+    if (value.serverNow === undefined) {
+      value.serverNow = Date.now();
+    }
+  }
   res.end(JSON.stringify(value));
 }
 
@@ -230,7 +253,9 @@ const server = http.createServer(async (req, res) => {
           s.spinDuration = dur;
         }
       }
-      s.endsAt = Date.now() + seconds * 1000;
+      s.totalDuration = seconds * 1000;
+      s.startedAt = Date.now();
+      s.endsAt = seconds > 0 ? (s.startedAt + s.totalDuration) : null;
       save(s);
       return json(res, 200, s);
     }
@@ -266,7 +291,10 @@ const server = http.createServer(async (req, res) => {
       s.roundId = (s.roundId || 1) + 1;
       s.entries = [];
       s.winner = null;
-      s.endsAt = null;
+      const dur = s.totalDuration || 300000;
+      s.totalDuration = dur;
+      s.startedAt = Date.now();
+      s.endsAt = s.startedAt + dur;
       save(s);
       return json(res, 200, s);
     }

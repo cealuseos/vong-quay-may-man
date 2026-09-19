@@ -670,8 +670,15 @@
     let lastSecondRendered = -1;
     let lastTenthRendered = -1;
     let totalDurationMs = 300000;
-    let localCountdownEnd = null;
     let autoSpinTriggered = false;
+
+    // Thuật toán đồng bộ thời gian NTP với Server (loại bỏ độ lệch đồng hồ giữa các máy)
+    let serverTimeOffset = 0; // serverTime = Date.now() + serverTimeOffset
+    let isTimeSynced = false;
+
+    function getSyncedNow() {
+      return Date.now() + serverTimeOffset;
+    }
 
     function formatTime(totalSec) {
       const m = Math.floor(totalSec / 60);
@@ -717,11 +724,11 @@
         return;
       }
 
-      // Mục tiêu đếm ngược: server endsAt hoặc localCountdownEnd
-      const activeTarget = (!sharedWinner || !locked) ? (targetEndsAt || localCountdownEnd) : null;
+      // Mục tiêu đếm ngược: luôn lấy mốc thời gian chuẩn từ Server (targetEndsAt)
+      const activeTarget = (!sharedWinner && !locked) ? targetEndsAt : null;
 
       if (activeTarget) {
-        const now = Date.now();
+        const now = getSyncedNow();
         const diffMs = Math.max(0, activeTarget - now);
         const totalSec = Math.floor(diffMs / 1000);
         const tenths = Math.floor((diffMs % 1000) / 100);
@@ -754,11 +761,10 @@
 
     function setCountdown() {
       if (locked || isSpinning) return;
-      targetEndsAt = null;
-      autoSpinTriggered = false;
       const sec = Math.max(0, Number(el('minutes').value || 0) * 60 + Number(el('seconds').value || 0));
       totalDurationMs = Math.max(1000, sec * 1000);
-      localCountdownEnd = sec > 0 ? (Date.now() + totalDurationMs) : null;
+      targetEndsAt = sec > 0 ? (getSyncedNow() + totalDurationMs) : null;
+      autoSpinTriggered = false;
       lastSecondRendered = -1;
       lastTenthRendered = -1;
     }
@@ -1327,6 +1333,7 @@
 
     // Khi trang được mở qua máy chủ, phần bên dưới đồng bộ dữ liệu chung cho mọi thiết bị.
     async function request(path, options = {}) {
+      const tStart = Date.now();
       const response = await fetch(path, {
         ...options,
         headers: {
@@ -1335,8 +1342,25 @@
           ...(options.headers || {})
         }
       });
+      const tEnd = Date.now();
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Không thể kết nối máy chủ.');
+
+      // Tính độ lệch thời gian NTP giữa Client và Server (Clock Skew)
+      if (data && typeof data.serverNow === 'number') {
+        const roundTrip = Math.max(0, tEnd - tStart);
+        const serverEstimateAtArrival = data.serverNow + Math.round(roundTrip / 2);
+        const currentOffset = serverEstimateAtArrival - tEnd;
+
+        if (!isTimeSynced) {
+          serverTimeOffset = currentOffset;
+          isTimeSynced = true;
+        } else {
+          // Lọc nhiễu mạng với bộ lọc trung bình động làm mịn
+          serverTimeOffset = Math.round(serverTimeOffset * 0.65 + currentOffset * 0.35);
+        }
+      }
+
       return data;
     }
 
@@ -1394,13 +1418,22 @@
         }
       }
 
+      // Đồng bộ tổng thời gian gốc của vòng để thanh tiến trình khớp 100%
+      if (s.totalDuration) {
+        totalDurationMs = s.totalDuration;
+      } else if (s.endsAt && s.startedAt) {
+        totalDurationMs = Math.max(1000, s.endsAt - s.startedAt);
+      }
+
       if (s.endsAt !== targetEndsAt) {
         targetEndsAt = s.endsAt;
         autoSpinTriggered = false;
         lastSecondRendered = -1;
         lastTenthRendered = -1;
-        if (targetEndsAt && targetEndsAt > Date.now()) {
-          totalDurationMs = Math.max(1000, targetEndsAt - Date.now());
+        if (targetEndsAt && targetEndsAt > getSyncedNow()) {
+          if (!s.totalDuration && (!s.startedAt || s.startedAt <= 0)) {
+            totalDurationMs = Math.max(1000, targetEndsAt - getSyncedNow());
+          }
         }
       }
       if (s.roundId && s.roundId !== currentRoundId) {
@@ -1417,7 +1450,7 @@
         const key = `${s.winner.name}:${s.winner.number}`;
         if (key !== sharedWinner) {
           sharedWinner = key;
-          const endedRecently = s.endsAt && (Date.now() - s.endsAt < 30000);
+          const endedRecently = s.endsAt && (getSyncedNow() - s.endsAt < 30000);
           // Nếu vòng quay vừa kết thúc hoặc người dùng đang mở trang: kích hoạt hiệu ứng xoay
           if (endedRecently || hasEverLoaded) {
             spinToWinner(s.winner, true);
@@ -1454,12 +1487,27 @@
       } catch {}
     }
 
+    let syncTimeout = null;
+    function scheduleNextSync() {
+      if (syncTimeout) clearTimeout(syncTimeout);
+      let delay = 2000;
+      if (targetEndsAt && !sharedWinner && !locked) {
+        const remaining = targetEndsAt - getSyncedNow();
+        if (remaining <= 6000 && remaining >= -2000) {
+          delay = 600; // Tăng tốc độ polling khi sắp hết giờ để đồng bộ vòng quay chính xác từng giây
+        }
+      }
+      syncTimeout = setTimeout(async () => {
+        await sync();
+        scheduleNextSync();
+      }, delay);
+    }
+
     async function startShared() {
       try {
-        await request('/api/state');
         clearInterval(timer);
         await sync();
-        setInterval(sync, 2000);
+        scheduleNextSync();
 
         el('joinForm').addEventListener('submit', async event => {
           event.preventDefault();
@@ -1577,8 +1625,6 @@
             isSpinning = false;
             sharedWinner = '';
             rotation = 0;
-            targetEndsAt = null;
-            localCountdownEnd = null;
             autoSpinTriggered = false;
             lastSecondRendered = -1;
             lastTenthRendered = -1;
