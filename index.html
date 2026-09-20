@@ -1436,7 +1436,8 @@
           }
         }
       }
-      if (s.roundId && s.roundId !== currentRoundId) {
+      const roundChanged = Boolean(s.roundId && s.roundId !== currentRoundId);
+      if (roundChanged) {
         currentRoundId = s.roundId;
         autoSpinTriggered = false;
         lastSecondRendered = -1;
@@ -1461,7 +1462,9 @@
         }
       } else {
         // Vòng quay đang hoạt động hoặc Admin vừa bấm Reset
-        if (sharedWinner) {
+        // Reset phải mở lại form trên MỌI thiết bị, kể cả thiết bị chưa nhận
+        // hiệu ứng người thắng hoặc vừa tải lại trong lúc vòng cũ kết thúc.
+        if (sharedWinner || locked || isSpinning || roundChanged) {
           sharedWinner = '';
           locked = false;
           isSpinning = false;
@@ -1472,6 +1475,7 @@
           canvas.style.transition = `transform ${spinDuration}s cubic-bezier(0.12, 0.8, 0.15, 1)`;
           el('result').classList.remove('show');
           el('result').innerHTML = '';
+          el('joinForm').querySelectorAll('input,button').forEach(x => (x.disabled = false));
           el('stageNote').textContent = entries.length
             ? `⚛ Đã nạp ${entries.length} hạt electron vào vòng quay lượng tử.`
             : '⚛ Hệ thống lượng tử đang chờ nạp hạt electron (người chơi)...';
